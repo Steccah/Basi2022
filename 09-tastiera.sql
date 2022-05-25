@@ -1,6 +1,7 @@
 INSERT INTO public."TASTIERA MECCANICA" ("ID", "ID_KEYCAPS", "ID_PCB", "ID_SWITCH", "ID_PLATE", "ID_CASE") VALUES
 -- keycaps, pcb, switch, plate, case
 -- layout 11
+(1, 60, 40, 23, 22, 4),
 (2, 4, 11, 13, 22, 18),
 (3, 4, 40, 7, 8, 7),
 (4, 88, 11, 9, 9, 25),

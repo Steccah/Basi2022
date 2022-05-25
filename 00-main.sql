@@ -253,7 +253,7 @@ CREATE TABLE public."CASE" (
 );
 -- ddl-end --
 
-/*INSERT INTO*/ public."CASE" ("ID", "Colore", "Materiale", "Manufacturer", "Prezzo", "Quantità", "ID_LAYOUT") VALUES (E'1', E'verde', E'piombo', E'acciaierie venete', E'23', E'12', E'1');
+--INSERT INTO public."CASE" ("ID", "Colore", "Materiale", "Manufacturer", "Prezzo", "Quantità", "ID_LAYOUT") VALUES (E'1', E'verde', E'piombo', E'acciaierie venete', E'23', E'12', E'1');
 -- ddl-end --
 
 -- object: "CASE_fk" | type: CONSTRAINT --

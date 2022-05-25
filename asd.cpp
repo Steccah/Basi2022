@@ -47,11 +47,13 @@ int main(int argc, char **argv)
     tryConn(conn);
 
     const char *query[6] = {
+        // roba nulla
         "SELECT \"Materiale\", \"Designer\", \"Profilo\", \"Manufacturer\", \"Prezzo\", \"Formato\", \"Size\" \
         FROM \"KEYCAPS\" as k, \"LAYOUT\" as l \
         WHERE l.\"ID\" = k.\"ID_LAYOUT\" \
         ORDER BY \"Prezzo\" desc;",
 
+        // costo per tastiera
         "SELECT mkb.\"ID\", (p.\"Prezzo\" + kc.\"Prezzo\" + c.\"Prezzo\" + pl.\"Prezzo\" + (s.\"Prezzo\" * l.\"N_tasti\")) totale \
         FROM \"TASTIERA MECCANICA\" AS mkb \
         JOIN \"KEYCAPS\" AS kc ON mkb.\"ID_KEYCAPS\" = kc.\"ID\" \
@@ -61,6 +63,7 @@ int main(int argc, char **argv)
         JOIN \"SWITCH\"  AS s  ON mkb.\"ID_SWITCH\"  = s.\"ID\" \
         JOIN \"LAYOUT\"  AS l  ON p.\"ID_LAYOUT\" = l.\"ID\";",
 
+        // soldi spesi per utente
         "SELECT u.\"Nome\", u.\"Cognome\", mkb.\"ID\", sum(p.\"Prezzo\" + kc.\"Prezzo\" + c.\"Prezzo\" + pl.\"Prezzo\" + (s.\"Prezzo\" * l.\"N_tasti\") - COALESCE(cs.\"Valore\", 0::money)) as totale \
         from \"UTENTE\" u \
         JOIN \"INDIRIZZO\" i ON u.\"ID_INDIRIZZO\" = i.\"ID\" \
@@ -75,24 +78,21 @@ int main(int argc, char **argv)
         JOIN \"CASE\"    AS c  ON mkb.\"ID_CASE\"    = c.\"ID\" \
         JOIN \"PLATE\"   AS pl ON mkb.\"ID_PLATE\"   = pl.\"ID\" \
         JOIN \"SWITCH\"  AS s  ON mkb.\"ID_SWITCH\"  = s.\"ID\" \
+        \
+        JOIN \"LAYOUT\"  AS l  ON p.\"ID_LAYOUT\" = l.\"ID\" \
+        \
         GROUP BY u.\"ID\", mkb.\"ID\" \
-        HAVING sum(p.\"Prezzo\" + kc.\"Prezzo\" + c.\"Prezzo\" + pl.\"Prezzo\" + (s.\"Prezzo\" * l.\"N_tasti\") - COALESCE(cs.\"Valore\", 0::money)) > 500::money \
+        HAVING sum(p.\"Prezzo\" + kc.\"Prezzo\" + c.\"Prezzo\" + pl.\"Prezzo\" + (s.\"Prezzo\" * l.\"N_tasti\") - COALESCE(cs.\"Valore\", 0::money)) > $1::money \
         ORDER BY totale desc;",
 
-        "drop view if exists piatti_clienti; \
-        create view piatti_clienti as \
-        select c.mail,po.piatto,sum(quantita) as tot \
-        from cliente c, ordine o, piatti_ordinati po \
-        where c.mail = o.cliente and o.id = po.ordine \
-        group by c.mail,po.piatto; \
-        select p1.mail as cliente, p1.tot as n_ordinazioni \
-        from piatti_clienti p1 \
-        where p1.piatto = '%s' \
-        except \
-        select p1.mail, p1.tot \
-        from piatti_clienti p1, piatti_clienti p2 \
-        where p1.mail = p2.mail and p1.tot < p2.tot \
-        order by n_ordinazioni desc;",
+        // utenti con più di una tastiera
+        "SELECT u.\"Nome\", u.\"Cognome\", count(mkb.\"ID\") \
+        from \"UTENTE\" u \
+        JOIN \"ORDINE\" o ON o.\"ID_UTENTE\" = u.\"ID\" \
+        JOIN \"GRUPPO TASTIERE\" gt ON gt.\"NumOrdine_ORDINE\" = o.\"NumOrdine\" \
+        JOIN \"TASTIERA MECCANICA\" mkb ON mkb.\"ID\" = gt.\"ID_TASTIERA MECCANICA\" \
+        GROUP BY u.\"ID\" \
+        HAVING count(mkb.\"ID\")>1",
 
         "drop view if exists importo_tot_clienti; \
         create view importo_tot_clienti as \
@@ -136,13 +136,68 @@ int main(int argc, char **argv)
             order by cr.mail, r.id;"};
 
     // query
-    for (size_t i = 0; i <= 1; i++)
+    // for (size_t i = 0; i <= 3; i++)
+    // {
+    //     PGresult *res = PQexec(conn, query[i]);
+    //     checkResults(res, conn);
+    //     PQprint(stdout, res, &options);
+    // }
+    char c;
+    string num;
+    PGresult *res;
+    const char *p;
+    while (true)
     {
-        PGresult *res = PQexec(conn, query[i]);
-        checkResults(res, conn);
-        PQprint(stdout, res, &options);
+        cout << "1. per vedere (non so)" << endl
+             << "2. per vedere il costo di ogni tastiera" << endl
+             << "3. per vedere quali utenti hanno speso più di N €" << endl
+             << "4. per vedere quali utenti hanno comprato più di una tastiera" << endl
+             << "Q. per uscire" << endl;
+        cin >> c;
+        switch (c)
+        {
+        case '1':
+            res = PQexec(conn, query[0]);
+            checkResults(res, conn);
+            PQprint(stdout, res, &options);
+            break;
+        case '2':
+            res = PQexec(conn, query[1]);
+            checkResults(res, conn);
+            PQprint(stdout, res, &options);
+            break;
+        case '3':
+            res = PQprepare(conn, "query_legs", query[2], 1, NULL);
+            cout << "inserire numero" << endl;
+            cin >> num;
+            p = num.c_str();
+            res = PQexecPrepared(conn, "query_legs", 1, &p, NULL, 0, 0);
+
+            // res = PQexec(conn, query[2]);
+            checkResults(res, conn);
+            PQprint(stdout, res, &options);
+            break;
+        case '4':
+            res = PQexec(conn, query[3]);
+            checkResults(res, conn);
+            PQprint(stdout, res, &options);
+            break;
+        case '5':
+            cout << 5;
+            break;
+        case '6':
+            cout << 6;
+            break;
+        case 'q':
+        case 'Q':
+            cout << "Closing...";
+            PQfinish(conn);
+            return 0;
+        default:
+            cout << "carattere non ammesso\n";
+        }
     }
-    // fine
+    // fine in caso di boh
     PQfinish(conn);
     return 0;
 }

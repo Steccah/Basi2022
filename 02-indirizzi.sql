@@ -1,4 +1,4 @@
-INSERT INTO public."INDIRIZZO" ("ID", "Via", "CittÃ ", "Cap", "Provincia", "Regione") VALUES
+INSERT INTO public."INDIRIZZO" ("ID", "Via", "Città", "Cap", "Provincia", "Regione") VALUES
 (1, '58 American Terrace', 'Palermo', '90141', 'PA', 'Sicilia'),
 (2, '701 Eastlawn Terrace', 'Genova', '16124', 'GE', 'Liguria'),
 (3, '59 Annamark Hill', 'Genova', '16157', 'GE', 'Liguria'),
