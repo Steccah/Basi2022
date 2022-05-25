@@ -18,7 +18,7 @@ CREATE TABLE public."UTENTE" (
 	"ID" serial NOT NULL,
 	"Nome" varchar(20) NOT NULL,
 	"Cognome" varchar(20) NOT NULL,
-	"Email" varchar(30) NOT NULL,
+	"Email" varchar(35) NOT NULL,
 	"Telefono" varchar(10),
 	"Password" varchar(64),
 	"ID_INDIRIZZO" integer NOT NULL,
@@ -26,12 +26,12 @@ CREATE TABLE public."UTENTE" (
 );
 -- ddl-end --
 
-INSERT INTO public."UTENTE" ("ID", "Nome", "Cognome", "Email", "Telefono", "ID_INDIRIZZO") VALUES (E'1', E'Tony', E'Effe', E'tony@swag.com', E'1234567890', E'1');
--- ddl-end --
-INSERT INTO public."UTENTE" ("ID", "Nome", "Cognome", "Email", "Telefono", "ID_INDIRIZZO") VALUES (E'2', E'Sapo', E'Bully', E'sapo@bul.ly', E'2131232131', E'2');
--- ddl-end --
-INSERT INTO public."UTENTE" ("ID", "Nome", "Cognome", "Email", "Telefono", "ID_INDIRIZZO") VALUES (E'3', E'Pietro', E'Pacciani', E'pietro@gmail.com', E'3123123123', E'3');
--- ddl-end --
+--INSERT INTO public."UTENTE" ("ID", "Nome", "Cognome", "Email", "Telefono", "ID_INDIRIZZO") VALUES (E'1', E'Tony', E'Effe', E'tony@swag.com', E'1234567890', E'1');
+---- ddl-end --
+--INSERT INTO public."UTENTE" ("ID", "Nome", "Cognome", "Email", "Telefono", "ID_INDIRIZZO") VALUES (E'2', E'Sapo', E'Bully', E'sapo@bul.ly', E'2131232131', E'2');
+---- ddl-end --
+--INSERT INTO public."UTENTE" ("ID", "Nome", "Cognome", "Email", "Telefono", "ID_INDIRIZZO") VALUES (E'3', E'Pietro', E'Pacciani', E'pietro@gmail.com', E'3123123123', E'3');
+---- ddl-end --
 
 -- object: public."INDIRIZZO" | type: TABLE --
 -- DROP TABLE IF EXISTS public."INDIRIZZO" CASCADE;
@@ -46,19 +46,18 @@ CREATE TABLE public."INDIRIZZO" (
 );
 -- ddl-end --
 
-INSERT INTO public."INDIRIZZO" ("ID", "Via", "Città", "Cap", "Provincia", "Regione") VALUES (E'1', E'Via Crucis 12', E'Chioggia', E'69420', E'VE', E'Veneto');
--- ddl-end --
-INSERT INTO public."INDIRIZZO" ("ID", "Via", "Città", "Cap", "Provincia", "Regione") VALUES (E'2', E'Vicolo Corto 9', E'Arzeri', E'31020', E'TV', E'Veneto');
--- ddl-end --
-INSERT INTO public."INDIRIZZO" ("ID", "Via", "Città", "Cap", "Provincia", "Regione") VALUES (E'3', E'Via Roma 258', E'Castellamare di Stabia', E'03009', E'NA', E'Campania');
--- ddl-end --
+--INSERT INTO public."INDIRIZZO" ("ID", "Via", "Città", "Cap", "Provincia", "Regione") VALUES (E'1', E'Via Crucis 12', E'Chioggia', E'69420', E'VE', E'Veneto');
+---- ddl-end --
+--INSERT INTO public."INDIRIZZO" ("ID", "Via", "Città", "Cap", "Provincia", "Regione") VALUES (E'2', E'Vicolo Corto 9', E'Arzeri', E'31020', E'TV', E'Veneto');
+---- ddl-end --
+--INSERT INTO public."INDIRIZZO" ("ID", "Via", "Città", "Cap", "Provincia", "Regione") VALUES (E'3', E'Via Roma 258', E'Castellamare di Stabia', E'03009', E'NA', E'Campania');
+---- ddl-end --
 
 -- object: public."ORDINE" | type: TABLE --
 -- DROP TABLE IF EXISTS public."ORDINE" CASCADE;
 CREATE TABLE public."ORDINE" (
 	"NumOrdine" serial NOT NULL,
-	"Tastiere" smallint NOT NULL,
-	"Data" smallint NOT NULL,
+	"Data" date NOT NULL,
 	"ID_UTENTE" integer NOT NULL,
 	"ID_INDIRIZZO" integer NOT NULL,
 	"Name_CODICE SCONTO" varchar(12),
@@ -99,7 +98,7 @@ CREATE TABLE public."KEYCAPS" (
 );
 -- ddl-end --
 
-INSERT INTO public."KEYCAPS" ("ID", "Materiale", "Designer", "Shine_through", "Profilo", "Manufacturer", "Prezzo", "Quantità", "ID_LAYOUT") VALUES (E'1', E'PBT', E'Vigil Pablo', E'false', E'DSA', E'NicePBT', E'85', E'30', E'2');
+--INSERT INTO public."KEYCAPS" ("ID", "Materiale", "Designer", "Shine_through", "Profilo", "Manufacturer", "Prezzo", "Quantità", "ID_LAYOUT") VALUES (E'1', E'PBT', E'Vigil Pablo', E'false', E'DSA', E'NicePBT', E'85', E'30', E'2');
 -- ddl-end --
 
 -- object: public."LAYOUT" | type: TABLE --
@@ -113,30 +112,30 @@ CREATE TABLE public."LAYOUT" (
 );
 -- ddl-end --
 
-INSERT INTO public."LAYOUT" ("ID", "Formato", "Size", "N_tasti") VALUES (E'1', E'ISO-IT', E'60', E'68');
--- ddl-end --
-INSERT INTO public."LAYOUT" ("ID", "Formato", "Size", "N_tasti") VALUES (E'2', E'ISO-IT', E'65', E'67');
--- ddl-end --
-INSERT INTO public."LAYOUT" ("ID", "Formato", "Size", "N_tasti") VALUES (E'3', E'ISO-IT', E'TKL', E'87');
--- ddl-end --
-INSERT INTO public."LAYOUT" ("ID", "Formato", "Size", "N_tasti") VALUES (E'4', E'ISO-IT', E'100', E'104');
--- ddl-end --
-INSERT INTO public."LAYOUT" ("ID", "Formato", "Size", "N_tasti") VALUES (E'5', E'ISO-DE', E'60', E'68');
--- ddl-end --
-INSERT INTO public."LAYOUT" ("ID", "Formato", "Size", "N_tasti") VALUES (E'6', E'ISO-DE', E'65', E'67');
--- ddl-end --
-INSERT INTO public."LAYOUT" ("ID", "Formato", "Size", "N_tasti") VALUES (E'7', E'ISO-DE', E'TKL', E'87');
--- ddl-end --
-INSERT INTO public."LAYOUT" ("ID", "Formato", "Size", "N_tasti") VALUES (E'8', E'ISO-DE', E'100', E'104');
--- ddl-end --
-INSERT INTO public."LAYOUT" ("ID", "Formato", "Size", "N_tasti") VALUES (E'9', E'ANSI-US', E'60', E'68');
--- ddl-end --
-INSERT INTO public."LAYOUT" ("ID", "Formato", "Size", "N_tasti") VALUES (E'10', E'ANSI-US', E'65', E'67');
--- ddl-end --
-INSERT INTO public."LAYOUT" ("ID", "Formato", "Size", "N_tasti") VALUES (E'11', E'ANSI-US', E'TKL', E'87');
--- ddl-end --
-INSERT INTO public."LAYOUT" ("ID", "Formato", "Size", "N_tasti") VALUES (E'12', E'ANSI-US', E'100', E'104');
--- ddl-end --
+----INSERT INTO public."LAYOUT" ("ID", "Formato", "Size", "N_tasti") VALUES (E'1', E'ISO-IT', E'60', E'68');
+---- ddl-end --
+--INSERT INTO public."LAYOUT" ("ID", "Formato", "Size", "N_tasti") VALUES (E'2', E'ISO-IT', E'65', E'67');
+---- ddl-end --
+--INSERT INTO public."LAYOUT" ("ID", "Formato", "Size", "N_tasti") VALUES (E'3', E'ISO-IT', E'TKL', E'87');
+---- ddl-end --
+--INSERT INTO public."LAYOUT" ("ID", "Formato", "Size", "N_tasti") VALUES (E'4', E'ISO-IT', E'100', E'104');
+---- ddl-end --
+--INSERT INTO public."LAYOUT" ("ID", "Formato", "Size", "N_tasti") VALUES (E'5', E'ISO-DE', E'60', E'68');
+---- ddl-end --
+--INSERT INTO public."LAYOUT" ("ID", "Formato", "Size", "N_tasti") VALUES (E'6', E'ISO-DE', E'65', E'67');
+---- ddl-end --
+--INSERT INTO public."LAYOUT" ("ID", "Formato", "Size", "N_tasti") VALUES (E'7', E'ISO-DE', E'TKL', E'87');
+---- ddl-end --
+--INSERT INTO public."LAYOUT" ("ID", "Formato", "Size", "N_tasti") VALUES (E'8', E'ISO-DE', E'100', E'104');
+---- ddl-end --
+--INSERT INTO public."LAYOUT" ("ID", "Formato", "Size", "N_tasti") VALUES (E'9', E'ANSI-US', E'60', E'68');
+---- ddl-end --
+--INSERT INTO public."LAYOUT" ("ID", "Formato", "Size", "N_tasti") VALUES (E'10', E'ANSI-US', E'65', E'67');
+---- ddl-end --
+--INSERT INTO public."LAYOUT" ("ID", "Formato", "Size", "N_tasti") VALUES (E'11', E'ANSI-US', E'TKL', E'87');
+---- ddl-end --
+--INSERT INTO public."LAYOUT" ("ID", "Formato", "Size", "N_tasti") VALUES (E'12', E'ANSI-US', E'100', E'104');
+---- ddl-end --
 
 -- object: public."TASTIERA MECCANICA" | type: TABLE --
 -- DROP TABLE IF EXISTS public."TASTIERA MECCANICA" CASCADE;
@@ -150,9 +149,9 @@ CREATE TABLE public."TASTIERA MECCANICA" (
 	CONSTRAINT "MECHANICAL KEYBOARD_pk" PRIMARY KEY ("ID")
 );
 -- ddl-end --
-
+/*
 INSERT INTO public."TASTIERA MECCANICA" ("ID", "ID_KEYCAPS", "ID_PCB", "ID_SWITCH", "ID_PLATE", "ID_CASE") VALUES (E'1', E'1', E'1', E'1', E'1', E'1');
--- ddl-end --
+-- ddl-end --*/
 
 -- object: "KEYCAPS_fk" | type: CONSTRAINT --
 -- ALTER TABLE public."TASTIERA MECCANICA" DROP CONSTRAINT IF EXISTS "KEYCAPS_fk" CASCADE;
@@ -180,8 +179,8 @@ CREATE TABLE public."PCB" (
 COMMENT ON COLUMN public."PCB"."Ports" IS E'type-c\nNon so che altro';
 -- ddl-end --
 
-INSERT INTO public."PCB" ("ID", "Pin_number", "Manufacturer", "Ports", "Hotswappable", "Retroilluminazione", "Prezzo", "Quantità", "ID_LAYOUT", "Capacità_batteria") VALUES (E'1', E'3', E'TOFU', E'Type-c', E'false', E'false', E'230', E'100', E'2', E'1400');
--- ddl-end --
+--INSERT INTO public."PCB" ("ID", "Pin_number", "Manufacturer", "Ports", "Hotswappable", "Retroilluminazione", "Prezzo", "Quantità", "ID_LAYOUT", "Capacità_batteria") VALUES (E'1', E'3', E'TOFU', E'Type-c', E'false', E'false', E'230', E'100', E'2', DEFAULT);
+---- ddl-end --
 
 -- object: "PCB_fk" | type: CONSTRAINT --
 -- ALTER TABLE public."TASTIERA MECCANICA" DROP CONSTRAINT IF EXISTS "PCB_fk" CASCADE;
@@ -207,8 +206,8 @@ CREATE TABLE public."SWITCH" (
 );
 -- ddl-end --
 
-INSERT INTO public."SWITCH" ("ID", "Colore", "Actuation_force", "Transparenza", "Led_facing", "Silent", "Pin_number", "Manufacturer", "Actuation_type", "Prezzo") VALUES (E'1', E'Yellow', E'60', E'false', E'North', E'true', E'3', E'Cherry mx', E'Linear', E'0.60');
--- ddl-end --
+--INSERT INTO public."SWITCH" ("ID", "Colore", "Actuation_force", "Transparenza", "Led_facing", "Silent", "Pin_number", "Manufacturer", "Actuation_type", "Prezzo") VALUES (E'1', E'Yellow', E'60', E'false', E'North', E'true', E'3', E'Cherry mx', E'Linear', E'0.60');
+---- ddl-end --
 
 -- object: "SWITCH_fk" | type: CONSTRAINT --
 -- ALTER TABLE public."TASTIERA MECCANICA" DROP CONSTRAINT IF EXISTS "SWITCH_fk" CASCADE;
@@ -222,7 +221,7 @@ ON DELETE RESTRICT ON UPDATE CASCADE;
 CREATE TABLE public."PLATE" (
 	"ID" serial NOT NULL,
 	"Materiale" varchar(40) NOT NULL,
-	"Mancufacturer" varchar(20) NOT NULL,
+	"Manufacturer" varchar(20) NOT NULL,
 	"Prezzo" money NOT NULL,
 	"Quantità" smallint NOT NULL,
 	"ID_LAYOUT" integer NOT NULL,
@@ -230,8 +229,8 @@ CREATE TABLE public."PLATE" (
 );
 -- ddl-end --
 
-INSERT INTO public."PLATE" ("ID", "Materiale", "Mancufacturer", "Prezzo", "Quantità", "ID_LAYOUT") VALUES (E'1', E'Depleted uranium', E'USSR', E'999', E'3', E'2');
--- ddl-end --
+--INSERT INTO public."PLATE" ("ID", "Materiale", "Manufacturer", "Prezzo", "Quantità", "ID_LAYOUT") VALUES (E'1', E'Depleted uranium', E'USSR', E'999', E'3', E'2');
+---- ddl-end --
 
 -- object: "PLATE_fk" | type: CONSTRAINT --
 -- ALTER TABLE public."TASTIERA MECCANICA" DROP CONSTRAINT IF EXISTS "PLATE_fk" CASCADE;
@@ -244,6 +243,7 @@ ON DELETE RESTRICT ON UPDATE CASCADE;
 -- DROP TABLE IF EXISTS public."CASE" CASCADE;
 CREATE TABLE public."CASE" (
 	"ID" serial NOT NULL,
+	"Colore" varchar(20),
 	"Materiale" varchar(20) NOT NULL,
 	"Manufacturer" varchar(20) NOT NULL,
 	"Prezzo" money NOT NULL,
@@ -253,7 +253,7 @@ CREATE TABLE public."CASE" (
 );
 -- ddl-end --
 
-INSERT INTO public."CASE" ("ID", "Materiale", "Manufacturer", "Prezzo", "Quantità", "ID_LAYOUT") VALUES (E'1', E'Lead', E'ACCIAIERIE VENETE', E'12', E'800', E'2');
+/*INSERT INTO*/ public."CASE" ("ID", "Colore", "Materiale", "Manufacturer", "Prezzo", "Quantità", "ID_LAYOUT") VALUES (E'1', E'verde', E'piombo', E'acciaierie venete', E'23', E'12', E'1');
 -- ddl-end --
 
 -- object: "CASE_fk" | type: CONSTRAINT --
@@ -357,5 +357,3 @@ ON DELETE RESTRICT ON UPDATE CASCADE;
 -- ALTER TABLE public."RECENSIONE" DROP CONSTRAINT IF EXISTS "RECENSIONE_uq" CASCADE;
 ALTER TABLE public."RECENSIONE" ADD CONSTRAINT "RECENSIONE_uq" UNIQUE ("NumOrdine_ORDINE");
 -- ddl-end --
-
-
