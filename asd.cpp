@@ -15,7 +15,7 @@ void checkResults(PGresult *res, const PGconn *conn)
 {
     if (PQresultStatus(res) != PGRES_TUPLES_OK)
     {
-        cout << "risultati merda " << PQerrorMessage(conn) << endl;
+        cout << "Risultati sbagliati: " << PQerrorMessage(conn) << endl;
         PQclear(res);
         exit(1);
     }
@@ -30,7 +30,7 @@ void tryConn(PGconn *conn = nullptr)
         exit(1);
     }
     else
-        cout << "Connessione avvenuta correttamente\n";
+        cout << "Connessione avvenuta correttamente\n\n";
 }
 
 int main(int argc, char **argv)
@@ -61,7 +61,7 @@ int main(int argc, char **argv)
         JOIN \"CASE\"    AS c  ON mkb.\"ID_CASE\"    = c.\"ID\" \
         JOIN \"PLATE\"   AS pl ON mkb.\"ID_PLATE\"   = pl.\"ID\" \
         JOIN \"SWITCH\"  AS s  ON mkb.\"ID_SWITCH\"  = s.\"ID\" \
-        JOIN \"LAYOUT\"  AS l  ON p.\"ID_LAYOUT\" = l.\"ID\";",
+        JOIN \"LAYOUT\"  AS l  ON p.\"ID_LAYOUT\" = l.\"ID\";", // il layout serve per il numero di switch
 
         // soldi spesi per utente
         "SELECT u.\"Nome\", u.\"Cognome\", mkb.\"ID\", sum(p.\"Prezzo\" + kc.\"Prezzo\" + c.\"Prezzo\" + pl.\"Prezzo\" + (s.\"Prezzo\" * l.\"N_tasti\") - COALESCE(cs.\"Valore\", 0::money)) as totale \
@@ -82,7 +82,7 @@ int main(int argc, char **argv)
         JOIN \"LAYOUT\"  AS l  ON p.\"ID_LAYOUT\" = l.\"ID\" \
         \
         GROUP BY u.\"ID\", mkb.\"ID\" \
-        HAVING sum(p.\"Prezzo\" + kc.\"Prezzo\" + c.\"Prezzo\" + pl.\"Prezzo\" + (s.\"Prezzo\" * l.\"N_tasti\") - COALESCE(cs.\"Valore\", 0::money)) > $1::money \
+        HAVING sum(p.\"Prezzo\" + kc.\"Prezzo\" + c.\"Prezzo\" + pl.\"Prezzo\" + (s.\"Prezzo\" * l.\"N_tasti\") - COALESCE(cs.\"Valore\", 0::money)) > %s::money \
         ORDER BY totale desc;",
 
         // utenti con più di una tastiera
@@ -135,17 +135,8 @@ int main(int argc, char **argv)
             r.id = cr.id and cr.mail = '%s' \
             order by cr.mail, r.id;"};
 
-    // query
-    // for (size_t i = 0; i <= 3; i++)
-    // {
-    //     PGresult *res = PQexec(conn, query[i]);
-    //     checkResults(res, conn);
-    //     PQprint(stdout, res, &options);
-    // }
     char c;
-    string num;
     PGresult *res;
-    const char *p;
     char queryTemp[1500];
     while (true)
     {
@@ -213,13 +204,12 @@ int main(int argc, char **argv)
             PQprint(stdout, res, &options);
             break;
         case '3':
-            res = PQprepare(conn, "query_legs", query[2], 1, NULL);
-            cout << "inserire numero" << endl;
-            cin >> num;
-            p = num.c_str();
-            res = PQexecPrepared(conn, "query_legs", 1, &p, NULL, 0, 0);
+            char spesa[5];
+            cout << "inserire spesa" << endl;
+            cin >> spesa;
+            sprintf(queryTemp, query[2], spesa);
 
-            // res = PQexec(conn, query[2]);
+            res = PQexec(conn, queryTemp);
             checkResults(res, conn);
             PQprint(stdout, res, &options);
             break;
