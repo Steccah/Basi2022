@@ -71,7 +71,7 @@ int main(int argc, char **argv)
         JOIN \"GRUPPO TASTIERE\" gt ON gt.\"NumOrdine_ORDINE\" = o.\"NumOrdine\" \
         JOIN \"TASTIERA MECCANICA\" mkb ON mkb.\"ID\" = gt.\"ID_TASTIERA MECCANICA\" \
         \
-        FULL JOIN \"CODICE SCONTO\" cs ON cs.\"Name\" = o.\"Name_CODICE SCONTO\" \
+        FULL JOIN \"CODICE SCONTO\" cs ON cs.\"Nome\" = o.\"Nome_CODICE SCONTO\" \
         \
         JOIN \"KEYCAPS\" AS kc ON mkb.\"ID_KEYCAPS\" = kc.\"ID\" \
         JOIN \"PCB\"     AS p  ON mkb.\"ID_PCB\"     = p.\"ID\" \

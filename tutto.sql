@@ -1,19 +1,5 @@
--- Database generated with pgModeler (PostgreSQL Database Modeler).
--- pgModeler version: 1.0.0-alpha
--- PostgreSQL version: 14.0
--- Project Site: pgmodeler.io
--- Model Author: ---
-
--- Database creation must be performed outside a multi lined SQL file.
--- These commands were put in this file only as a convenience.
---
--- object: new_database | type: DATABASE --
 -- DROP DATABASE IF EXISTS new_database;
--- ddl-end --
-
-
--- object: public."UTENTE" | type: TABLE --
--- DROP TABLE IF EXISTS public."UTENTE" CASCADE;
+DROP TABLE IF EXISTS public."UTENTE" CASCADE;
 CREATE TABLE public."UTENTE" (
 	"ID" serial NOT NULL,
 	"Nome" varchar(20) NOT NULL,
@@ -24,17 +10,7 @@ CREATE TABLE public."UTENTE" (
 	"ID_INDIRIZZO" integer NOT NULL,
 	CONSTRAINT "UTENTE_pk" PRIMARY KEY ("ID")
 );
--- ddl-end --
-
---INSERT INTO public."UTENTE" ("ID", "Nome", "Cognome", "Email", "Telefono", "ID_INDIRIZZO") VALUES (E'1', E'Tony', E'Effe', E'tony@swag.com', E'1234567890', E'1');
----- ddl-end --
---INSERT INTO public."UTENTE" ("ID", "Nome", "Cognome", "Email", "Telefono", "ID_INDIRIZZO") VALUES (E'2', E'Sapo', E'Bully', E'sapo@bul.ly', E'2131232131', E'2');
----- ddl-end --
---INSERT INTO public."UTENTE" ("ID", "Nome", "Cognome", "Email", "Telefono", "ID_INDIRIZZO") VALUES (E'3', E'Pietro', E'Pacciani', E'pietro@gmail.com', E'3123123123', E'3');
----- ddl-end --
-
--- object: public."INDIRIZZO" | type: TABLE --
--- DROP TABLE IF EXISTS public."INDIRIZZO" CASCADE;
+DROP TABLE IF EXISTS public."INDIRIZZO" CASCADE;
 CREATE TABLE public."INDIRIZZO" (
 	"ID" serial NOT NULL,
 	"Via" varchar(60) NOT NULL,
@@ -44,46 +20,26 @@ CREATE TABLE public."INDIRIZZO" (
 	"Regione" varchar(21) NOT NULL,
 	CONSTRAINT "INDIRIZZO_pk" PRIMARY KEY ("ID")
 );
--- ddl-end --
-
---INSERT INTO public."INDIRIZZO" ("ID", "Via", "Città", "Cap", "Provincia", "Regione") VALUES (E'1', E'Via Crucis 12', E'Chioggia', E'69420', E'VE', E'Veneto');
----- ddl-end --
---INSERT INTO public."INDIRIZZO" ("ID", "Via", "Città", "Cap", "Provincia", "Regione") VALUES (E'2', E'Vicolo Corto 9', E'Arzeri', E'31020', E'TV', E'Veneto');
----- ddl-end --
---INSERT INTO public."INDIRIZZO" ("ID", "Via", "Città", "Cap", "Provincia", "Regione") VALUES (E'3', E'Via Roma 258', E'Castellamare di Stabia', E'03009', E'NA', E'Campania');
----- ddl-end --
-
--- object: public."ORDINE" | type: TABLE --
--- DROP TABLE IF EXISTS public."ORDINE" CASCADE;
+DROP TABLE IF EXISTS public."ORDINE" CASCADE;
 CREATE TABLE public."ORDINE" (
 	"NumOrdine" serial NOT NULL,
 	"Data" date NOT NULL,
 	"ID_UTENTE" integer NOT NULL,
 	"ID_INDIRIZZO" integer NOT NULL,
-	"Name_CODICE SCONTO" varchar(12),
+	"Nome_CODICE SCONTO" varchar(12),
 	CONSTRAINT "ORDINE_pk" PRIMARY KEY ("NumOrdine")
 );
--- ddl-end --
-
--- object: public."GRUPPO TASTIERE" | type: TABLE --
--- DROP TABLE IF EXISTS public."GRUPPO TASTIERE" CASCADE;
+DROP TABLE IF EXISTS public."GRUPPO TASTIERE" CASCADE;
 CREATE TABLE public."GRUPPO TASTIERE" (
 	"ID" serial NOT NULL,
 	"NumOrdine_ORDINE" integer NOT NULL,
 	"ID_TASTIERA MECCANICA" integer NOT NULL,
 	CONSTRAINT "GRUPPO TASTIERE_pk" PRIMARY KEY ("ID")
 );
--- ddl-end --
-
--- object: "ORDINE_fk" | type: CONSTRAINT --
 -- ALTER TABLE public."GRUPPO TASTIERE" DROP CONSTRAINT IF EXISTS "ORDINE_fk" CASCADE;
-ALTER TABLE public."GRUPPO TASTIERE" ADD CONSTRAINT "ORDINE_fk" FOREIGN KEY ("NumOrdine_ORDINE")
-REFERENCES public."ORDINE" ("NumOrdine") MATCH FULL
-ON DELETE RESTRICT ON UPDATE CASCADE;
--- ddl-end --
-
--- object: public."KEYCAPS" | type: TABLE --
--- DROP TABLE IF EXISTS public."KEYCAPS" CASCADE;
+ALTER TABLE public."GRUPPO TASTIERE"
+ADD CONSTRAINT "ORDINE_fk" FOREIGN KEY ("NumOrdine_ORDINE") REFERENCES public."ORDINE" ("NumOrdine") MATCH FULL ON DELETE RESTRICT ON UPDATE CASCADE;
+DROP TABLE IF EXISTS public."KEYCAPS" CASCADE;
 CREATE TABLE public."KEYCAPS" (
 	"ID" serial NOT NULL,
 	"Materiale" varchar(40) NOT NULL,
@@ -96,13 +52,7 @@ CREATE TABLE public."KEYCAPS" (
 	"ID_LAYOUT" integer NOT NULL,
 	CONSTRAINT "KEYCAPS_pk" PRIMARY KEY ("ID")
 );
--- ddl-end --
-
---INSERT INTO public."KEYCAPS" ("ID", "Materiale", "Designer", "Shine_through", "Profilo", "Manufacturer", "Prezzo", "Quantità", "ID_LAYOUT") VALUES (E'1', E'PBT', E'Vigil Pablo', E'false', E'DSA', E'NicePBT', E'85', E'30', E'2');
--- ddl-end --
-
--- object: public."LAYOUT" | type: TABLE --
--- DROP TABLE IF EXISTS public."LAYOUT" CASCADE;
+DROP TABLE IF EXISTS public."LAYOUT" CASCADE;
 CREATE TABLE public."LAYOUT" (
 	"ID" serial NOT NULL,
 	"Formato" varchar(7) NOT NULL,
@@ -110,35 +60,7 @@ CREATE TABLE public."LAYOUT" (
 	"N_tasti" smallint NOT NULL,
 	CONSTRAINT "LAYOUT_pk" PRIMARY KEY ("ID")
 );
--- ddl-end --
-
-----INSERT INTO public."LAYOUT" ("ID", "Formato", "Size", "N_tasti") VALUES (E'1', E'ISO-IT', E'60', E'68');
----- ddl-end --
---INSERT INTO public."LAYOUT" ("ID", "Formato", "Size", "N_tasti") VALUES (E'2', E'ISO-IT', E'65', E'67');
----- ddl-end --
---INSERT INTO public."LAYOUT" ("ID", "Formato", "Size", "N_tasti") VALUES (E'3', E'ISO-IT', E'TKL', E'87');
----- ddl-end --
---INSERT INTO public."LAYOUT" ("ID", "Formato", "Size", "N_tasti") VALUES (E'4', E'ISO-IT', E'100', E'104');
----- ddl-end --
---INSERT INTO public."LAYOUT" ("ID", "Formato", "Size", "N_tasti") VALUES (E'5', E'ISO-DE', E'60', E'68');
----- ddl-end --
---INSERT INTO public."LAYOUT" ("ID", "Formato", "Size", "N_tasti") VALUES (E'6', E'ISO-DE', E'65', E'67');
----- ddl-end --
---INSERT INTO public."LAYOUT" ("ID", "Formato", "Size", "N_tasti") VALUES (E'7', E'ISO-DE', E'TKL', E'87');
----- ddl-end --
---INSERT INTO public."LAYOUT" ("ID", "Formato", "Size", "N_tasti") VALUES (E'8', E'ISO-DE', E'100', E'104');
----- ddl-end --
---INSERT INTO public."LAYOUT" ("ID", "Formato", "Size", "N_tasti") VALUES (E'9', E'ANSI-US', E'60', E'68');
----- ddl-end --
---INSERT INTO public."LAYOUT" ("ID", "Formato", "Size", "N_tasti") VALUES (E'10', E'ANSI-US', E'65', E'67');
----- ddl-end --
---INSERT INTO public."LAYOUT" ("ID", "Formato", "Size", "N_tasti") VALUES (E'11', E'ANSI-US', E'TKL', E'87');
----- ddl-end --
---INSERT INTO public."LAYOUT" ("ID", "Formato", "Size", "N_tasti") VALUES (E'12', E'ANSI-US', E'100', E'104');
----- ddl-end --
-
--- object: public."TASTIERA MECCANICA" | type: TABLE --
--- DROP TABLE IF EXISTS public."TASTIERA MECCANICA" CASCADE;
+DROP TABLE IF EXISTS public."TASTIERA MECCANICA" CASCADE;
 CREATE TABLE public."TASTIERA MECCANICA" (
 	"ID" serial NOT NULL,
 	"ID_KEYCAPS" integer NOT NULL,
@@ -148,20 +70,10 @@ CREATE TABLE public."TASTIERA MECCANICA" (
 	"ID_CASE" integer NOT NULL,
 	CONSTRAINT "MECHANICAL KEYBOARD_pk" PRIMARY KEY ("ID")
 );
--- ddl-end --
-/*
-INSERT INTO public."TASTIERA MECCANICA" ("ID", "ID_KEYCAPS", "ID_PCB", "ID_SWITCH", "ID_PLATE", "ID_CASE") VALUES (E'1', E'1', E'1', E'1', E'1', E'1');
--- ddl-end --*/
-
--- object: "KEYCAPS_fk" | type: CONSTRAINT --
 -- ALTER TABLE public."TASTIERA MECCANICA" DROP CONSTRAINT IF EXISTS "KEYCAPS_fk" CASCADE;
-ALTER TABLE public."TASTIERA MECCANICA" ADD CONSTRAINT "KEYCAPS_fk" FOREIGN KEY ("ID_KEYCAPS")
-REFERENCES public."KEYCAPS" ("ID") MATCH FULL
-ON DELETE RESTRICT ON UPDATE CASCADE;
--- ddl-end --
-
--- object: public."PCB" | type: TABLE --
--- DROP TABLE IF EXISTS public."PCB" CASCADE;
+ALTER TABLE public."TASTIERA MECCANICA"
+ADD CONSTRAINT "KEYCAPS_fk" FOREIGN KEY ("ID_KEYCAPS") REFERENCES public."KEYCAPS" ("ID") MATCH FULL ON DELETE RESTRICT ON UPDATE CASCADE;
+DROP TABLE IF EXISTS public."PCB" CASCADE;
 CREATE TABLE public."PCB" (
 	"ID" serial NOT NULL,
 	"Pin_number" smallint NOT NULL,
@@ -175,22 +87,10 @@ CREATE TABLE public."PCB" (
 	"ID_LAYOUT" integer NOT NULL,
 	CONSTRAINT "PCB_pk" PRIMARY KEY ("ID")
 );
--- ddl-end --
-COMMENT ON COLUMN public."PCB"."Ports" IS E'type-c\nNon so che altro';
--- ddl-end --
-
---INSERT INTO public."PCB" ("ID", "Pin_number", "Manufacturer", "Ports", "Hotswappable", "Retroilluminazione", "Prezzo", "Quantità", "ID_LAYOUT", "Capacità_batteria") VALUES (E'1', E'3', E'TOFU', E'Type-c', E'false', E'false', E'230', E'100', E'2', DEFAULT);
----- ddl-end --
-
--- object: "PCB_fk" | type: CONSTRAINT --
 -- ALTER TABLE public."TASTIERA MECCANICA" DROP CONSTRAINT IF EXISTS "PCB_fk" CASCADE;
-ALTER TABLE public."TASTIERA MECCANICA" ADD CONSTRAINT "PCB_fk" FOREIGN KEY ("ID_PCB")
-REFERENCES public."PCB" ("ID") MATCH FULL
-ON DELETE RESTRICT ON UPDATE CASCADE;
--- ddl-end --
-
--- object: public."SWITCH" | type: TABLE --
--- DROP TABLE IF EXISTS public."SWITCH" CASCADE;
+ALTER TABLE public."TASTIERA MECCANICA"
+ADD CONSTRAINT "PCB_fk" FOREIGN KEY ("ID_PCB") REFERENCES public."PCB" ("ID") MATCH FULL ON DELETE RESTRICT ON UPDATE CASCADE;
+DROP TABLE IF EXISTS public."SWITCH" CASCADE;
 CREATE TABLE public."SWITCH" (
 	"ID" smallint NOT NULL,
 	"Colore" varchar(20),
@@ -204,20 +104,10 @@ CREATE TABLE public."SWITCH" (
 	"Prezzo" money,
 	CONSTRAINT "SWITCH_pk" PRIMARY KEY ("ID")
 );
--- ddl-end --
-
---INSERT INTO public."SWITCH" ("ID", "Colore", "Actuation_force", "Transparenza", "Led_facing", "Silent", "Pin_number", "Manufacturer", "Actuation_type", "Prezzo") VALUES (E'1', E'Yellow', E'60', E'false', E'North', E'true', E'3', E'Cherry mx', E'Linear', E'0.60');
----- ddl-end --
-
--- object: "SWITCH_fk" | type: CONSTRAINT --
 -- ALTER TABLE public."TASTIERA MECCANICA" DROP CONSTRAINT IF EXISTS "SWITCH_fk" CASCADE;
-ALTER TABLE public."TASTIERA MECCANICA" ADD CONSTRAINT "SWITCH_fk" FOREIGN KEY ("ID_SWITCH")
-REFERENCES public."SWITCH" ("ID") MATCH FULL
-ON DELETE RESTRICT ON UPDATE CASCADE;
--- ddl-end --
-
--- object: public."PLATE" | type: TABLE --
--- DROP TABLE IF EXISTS public."PLATE" CASCADE;
+ALTER TABLE public."TASTIERA MECCANICA"
+ADD CONSTRAINT "SWITCH_fk" FOREIGN KEY ("ID_SWITCH") REFERENCES public."SWITCH" ("ID") MATCH FULL ON DELETE RESTRICT ON UPDATE CASCADE;
+DROP TABLE IF EXISTS public."PLATE" CASCADE;
 CREATE TABLE public."PLATE" (
 	"ID" serial NOT NULL,
 	"Materiale" varchar(40) NOT NULL,
@@ -227,20 +117,10 @@ CREATE TABLE public."PLATE" (
 	"ID_LAYOUT" integer NOT NULL,
 	CONSTRAINT "PLATE_pk" PRIMARY KEY ("ID")
 );
--- ddl-end --
-
---INSERT INTO public."PLATE" ("ID", "Materiale", "Manufacturer", "Prezzo", "Quantità", "ID_LAYOUT") VALUES (E'1', E'Depleted uranium', E'USSR', E'999', E'3', E'2');
----- ddl-end --
-
--- object: "PLATE_fk" | type: CONSTRAINT --
 -- ALTER TABLE public."TASTIERA MECCANICA" DROP CONSTRAINT IF EXISTS "PLATE_fk" CASCADE;
-ALTER TABLE public."TASTIERA MECCANICA" ADD CONSTRAINT "PLATE_fk" FOREIGN KEY ("ID_PLATE")
-REFERENCES public."PLATE" ("ID") MATCH FULL
-ON DELETE RESTRICT ON UPDATE CASCADE;
--- ddl-end --
-
--- object: public."CASE" | type: TABLE --
--- DROP TABLE IF EXISTS public."CASE" CASCADE;
+ALTER TABLE public."TASTIERA MECCANICA"
+ADD CONSTRAINT "PLATE_fk" FOREIGN KEY ("ID_PLATE") REFERENCES public."PLATE" ("ID") MATCH FULL ON DELETE RESTRICT ON UPDATE CASCADE;
+DROP TABLE IF EXISTS public."CASE" CASCADE;
 CREATE TABLE public."CASE" (
 	"ID" serial NOT NULL,
 	"Colore" varchar(20),
@@ -251,112 +131,58 @@ CREATE TABLE public."CASE" (
 	"ID_LAYOUT" integer NOT NULL,
 	CONSTRAINT new_table_pk PRIMARY KEY ("ID")
 );
--- ddl-end --
-
---INSERT INTO public."CASE" ("ID", "Colore", "Materiale", "Manufacturer", "Prezzo", "Quantità", "ID_LAYOUT") VALUES (E'1', E'verde', E'piombo', E'acciaierie venete', E'23', E'12', E'1');
--- ddl-end --
-
--- object: "CASE_fk" | type: CONSTRAINT --
 -- ALTER TABLE public."TASTIERA MECCANICA" DROP CONSTRAINT IF EXISTS "CASE_fk" CASCADE;
-ALTER TABLE public."TASTIERA MECCANICA" ADD CONSTRAINT "CASE_fk" FOREIGN KEY ("ID_CASE")
-REFERENCES public."CASE" ("ID") MATCH FULL
-ON DELETE RESTRICT ON UPDATE CASCADE;
--- ddl-end --
-
--- object: "LAYOUT_fk" | type: CONSTRAINT --
+ALTER TABLE public."TASTIERA MECCANICA"
+ADD CONSTRAINT "CASE_fk" FOREIGN KEY ("ID_CASE") REFERENCES public."CASE" ("ID") MATCH FULL ON DELETE RESTRICT ON UPDATE CASCADE;
 -- ALTER TABLE public."KEYCAPS" DROP CONSTRAINT IF EXISTS "LAYOUT_fk" CASCADE;
-ALTER TABLE public."KEYCAPS" ADD CONSTRAINT "LAYOUT_fk" FOREIGN KEY ("ID_LAYOUT")
-REFERENCES public."LAYOUT" ("ID") MATCH FULL
-ON DELETE RESTRICT ON UPDATE CASCADE;
--- ddl-end --
-
--- object: "LAYOUT_fk" | type: CONSTRAINT --
+ALTER TABLE public."KEYCAPS"
+ADD CONSTRAINT "LAYOUT_fk" FOREIGN KEY ("ID_LAYOUT") REFERENCES public."LAYOUT" ("ID") MATCH FULL ON DELETE RESTRICT ON UPDATE CASCADE;
 -- ALTER TABLE public."PCB" DROP CONSTRAINT IF EXISTS "LAYOUT_fk" CASCADE;
-ALTER TABLE public."PCB" ADD CONSTRAINT "LAYOUT_fk" FOREIGN KEY ("ID_LAYOUT")
-REFERENCES public."LAYOUT" ("ID") MATCH FULL
-ON DELETE RESTRICT ON UPDATE CASCADE;
--- ddl-end --
-
--- object: "LAYOUT_fk" | type: CONSTRAINT --
+ALTER TABLE public."PCB"
+ADD CONSTRAINT "LAYOUT_fk" FOREIGN KEY ("ID_LAYOUT") REFERENCES public."LAYOUT" ("ID") MATCH FULL ON DELETE RESTRICT ON UPDATE CASCADE;
 -- ALTER TABLE public."CASE" DROP CONSTRAINT IF EXISTS "LAYOUT_fk" CASCADE;
-ALTER TABLE public."CASE" ADD CONSTRAINT "LAYOUT_fk" FOREIGN KEY ("ID_LAYOUT")
-REFERENCES public."LAYOUT" ("ID") MATCH FULL
-ON DELETE RESTRICT ON UPDATE CASCADE;
--- ddl-end --
-
--- object: "LAYOUT_fk" | type: CONSTRAINT --
+ALTER TABLE public."CASE"
+ADD CONSTRAINT "LAYOUT_fk" FOREIGN KEY ("ID_LAYOUT") REFERENCES public."LAYOUT" ("ID") MATCH FULL ON DELETE RESTRICT ON UPDATE CASCADE;
 -- ALTER TABLE public."PLATE" DROP CONSTRAINT IF EXISTS "LAYOUT_fk" CASCADE;
-ALTER TABLE public."PLATE" ADD CONSTRAINT "LAYOUT_fk" FOREIGN KEY ("ID_LAYOUT")
-REFERENCES public."LAYOUT" ("ID") MATCH FULL
-ON DELETE RESTRICT ON UPDATE CASCADE;
--- ddl-end --
-
--- object: "INDIRIZZO_fk" | type: CONSTRAINT --
+ALTER TABLE public."PLATE"
+ADD CONSTRAINT "LAYOUT_fk" FOREIGN KEY ("ID_LAYOUT") REFERENCES public."LAYOUT" ("ID") MATCH FULL ON DELETE RESTRICT ON UPDATE CASCADE;
 -- ALTER TABLE public."UTENTE" DROP CONSTRAINT IF EXISTS "INDIRIZZO_fk" CASCADE;
-ALTER TABLE public."UTENTE" ADD CONSTRAINT "INDIRIZZO_fk" FOREIGN KEY ("ID_INDIRIZZO")
-REFERENCES public."INDIRIZZO" ("ID") MATCH FULL
-ON DELETE RESTRICT ON UPDATE CASCADE;
--- ddl-end --
-
--- object: "UTENTE_fk" | type: CONSTRAINT --
+ALTER TABLE public."UTENTE"
+ADD CONSTRAINT "INDIRIZZO_fk" FOREIGN KEY ("ID_INDIRIZZO") REFERENCES public."INDIRIZZO" ("ID") MATCH FULL ON DELETE RESTRICT ON UPDATE CASCADE;
 -- ALTER TABLE public."ORDINE" DROP CONSTRAINT IF EXISTS "UTENTE_fk" CASCADE;
-ALTER TABLE public."ORDINE" ADD CONSTRAINT "UTENTE_fk" FOREIGN KEY ("ID_UTENTE")
-REFERENCES public."UTENTE" ("ID") MATCH FULL
-ON DELETE RESTRICT ON UPDATE CASCADE;
--- ddl-end --
-
--- object: "INDIRIZZO_fk" | type: CONSTRAINT --
+ALTER TABLE public."ORDINE"
+ADD CONSTRAINT "UTENTE_fk" FOREIGN KEY ("ID_UTENTE") REFERENCES public."UTENTE" ("ID") MATCH FULL ON DELETE RESTRICT ON UPDATE CASCADE;
 -- ALTER TABLE public."ORDINE" DROP CONSTRAINT IF EXISTS "INDIRIZZO_fk" CASCADE;
-ALTER TABLE public."ORDINE" ADD CONSTRAINT "INDIRIZZO_fk" FOREIGN KEY ("ID_INDIRIZZO")
-REFERENCES public."INDIRIZZO" ("ID") MATCH FULL
-ON DELETE RESTRICT ON UPDATE CASCADE;
--- ddl-end --
-
--- object: "TASTIERA MECCANICA_fk" | type: CONSTRAINT --
+ALTER TABLE public."ORDINE"
+ADD CONSTRAINT "INDIRIZZO_fk" FOREIGN KEY ("ID_INDIRIZZO") REFERENCES public."INDIRIZZO" ("ID") MATCH FULL ON DELETE RESTRICT ON UPDATE CASCADE;
 -- ALTER TABLE public."GRUPPO TASTIERE" DROP CONSTRAINT IF EXISTS "TASTIERA MECCANICA_fk" CASCADE;
-ALTER TABLE public."GRUPPO TASTIERE" ADD CONSTRAINT "TASTIERA MECCANICA_fk" FOREIGN KEY ("ID_TASTIERA MECCANICA")
-REFERENCES public."TASTIERA MECCANICA" ("ID") MATCH FULL
-ON DELETE RESTRICT ON UPDATE CASCADE;
--- ddl-end --
-
--- object: public."CODICE SCONTO" | type: TABLE --
--- DROP TABLE IF EXISTS public."CODICE SCONTO" CASCADE;
+ALTER TABLE public."GRUPPO TASTIERE"
+ADD CONSTRAINT "TASTIERA MECCANICA_fk" FOREIGN KEY ("ID_TASTIERA MECCANICA") REFERENCES public."TASTIERA MECCANICA" ("ID") MATCH FULL ON DELETE RESTRICT ON UPDATE CASCADE;
+DROP TABLE IF EXISTS public."CODICE SCONTO" CASCADE;
 CREATE TABLE public."CODICE SCONTO" (
-	"Name" varchar(12) NOT NULL,
+	"Nome" varchar(12) NOT NULL,
 	"Valore" money NOT NULL,
-	CONSTRAINT "CODICE SCONTO_pk" PRIMARY KEY ("Name")
+	CONSTRAINT "CODICE SCONTO_pk" PRIMARY KEY ("Nome")
 );
--- ddl-end --
-
--- object: "CODICE SCONTO_fk" | type: CONSTRAINT --
 -- ALTER TABLE public."ORDINE" DROP CONSTRAINT IF EXISTS "CODICE SCONTO_fk" CASCADE;
-ALTER TABLE public."ORDINE" ADD CONSTRAINT "CODICE SCONTO_fk" FOREIGN KEY ("Name_CODICE SCONTO")
-REFERENCES public."CODICE SCONTO" ("Name") MATCH FULL
-ON DELETE SET NULL ON UPDATE CASCADE;
--- ddl-end --
-
--- object: public."RECENSIONE" | type: TABLE --
--- DROP TABLE IF EXISTS public."RECENSIONE" CASCADE;
+ALTER TABLE public."ORDINE"
+ADD CONSTRAINT "CODICE SCONTO_fk" FOREIGN KEY ("Nome_CODICE SCONTO") REFERENCES public."CODICE SCONTO" ("Nome") MATCH FULL ON DELETE
+SET NULL ON UPDATE CASCADE;
+DROP TABLE IF EXISTS public."RECENSIONE" CASCADE;
 CREATE TABLE public."RECENSIONE" (
 	"ID" smallint NOT NULL,
 	"Valutazione" varchar(1) NOT NULL,
 	"Data" date NOT NULL,
+	"Testo" varchar(140),
 	"NumOrdine_ORDINE" integer NOT NULL,
 	CONSTRAINT "RECENSIONE_pk" PRIMARY KEY ("ID")
 );
--- ddl-end --
-
--- object: "ORDINE_fk" | type: CONSTRAINT --
 -- ALTER TABLE public."RECENSIONE" DROP CONSTRAINT IF EXISTS "ORDINE_fk" CASCADE;
-ALTER TABLE public."RECENSIONE" ADD CONSTRAINT "ORDINE_fk" FOREIGN KEY ("NumOrdine_ORDINE")
-REFERENCES public."ORDINE" ("NumOrdine") MATCH FULL
-ON DELETE RESTRICT ON UPDATE CASCADE;
--- ddl-end --
-
--- object: "RECENSIONE_uq" | type: CONSTRAINT --
+ALTER TABLE public."RECENSIONE"
+ADD CONSTRAINT "ORDINE_fk" FOREIGN KEY ("NumOrdine_ORDINE") REFERENCES public."ORDINE" ("NumOrdine") MATCH FULL ON DELETE RESTRICT ON UPDATE CASCADE;
 -- ALTER TABLE public."RECENSIONE" DROP CONSTRAINT IF EXISTS "RECENSIONE_uq" CASCADE;
-ALTER TABLE public."RECENSIONE" ADD CONSTRAINT "RECENSIONE_uq" UNIQUE ("NumOrdine_ORDINE");
--- ddl-end --
+ALTER TABLE public."RECENSIONE"
+ADD CONSTRAINT "RECENSIONE_uq" UNIQUE ("NumOrdine_ORDINE");
 INSERT INTO public."LAYOUT" ("ID", "Formato", "Size", "N_tasti") VALUES
 (E'1', E'ISO-IT', E'60', E'68'),
 (E'2', E'ISO-IT', E'65', E'67'),
@@ -679,34 +505,34 @@ INSERT INTO public."KEYCAPS" ("ID", "Materiale", "Designer", "Shine_through", "P
 (100, 'Alluminio', 'esanson2r', true, 'OEM', 'RAMAWORKS', 63.82, 353, 3);
 INSERT INTO public."PCB" ("ID", "Pin_number", "Manufacturer", "Ports", "Hotswappable",  "Retroilluminazione", "Prezzo", "Quantità", "Capacità_batteria", "ID_LAYOUT") VALUES
 (1, 5, 'Carpe', 'thunderbolt', true, false, 169.3, 108, null, 2),
-(2, 3, 'Pizza', 'PS/2', false, true, 353.94, 39, null, 3),
-(3, 5, 'Pizza', 'type a', true, true, 313.07, 41, null, 7),
-(4, 5, 'Pizza', 'thunderbolt', false, true, 234.04, 124, null, 7),
+(2, 3, 'Pizza', 'PS/2', false, true, 153.94, 39, null, 3),
+(3, 5, 'Pizza', 'type a', true, true, 113.07, 41, null, 7),
+(4, 5, 'Pizza', 'thunderbolt', false, true, 134.04, 124, null, 7),
 (5, 3, 'ErgoDox', 'microusb', false, false, 160.22, 32, 1600, 9),
-(6, 5, 'Phantom', 'PS/2', true, true, 336.68, 58, 1200, 9),
-(7, 5, 'KBDfans', 'PS/2', false, false, 165.35, 103, null, 6),
+(6, 5, 'Phantom', 'PS/2', true, true, 136.68, 58, 1200, 9),
+(7, 5, 'KBDfans', 'PS/2', false, false, 65.35, 103, null, 6),
 (8, 3, 'GMMK', 'type c', false, true, 61.68, 125, 1800, 5),
-(9, 3, 'KBDfans', 'type c', true, true, 272.49, 130, null, 2),
-(10, 3, 'Pizza', 'type c', true, false, 336.4, 74, null, 10),
-(11, 3, 'KBDfans', 'microusb', false, true, 281.87, 30, null, 11),
-(12, 3, 'Pizza', 'thunderbolt', true, false, 258.25, 14, null, 1),
-(13, 3, 'Carpe', 'thunderbolt', true, false, 278.03, 20, null, 1),
-(14, 5, 'Phantom', 'type a', false, false, 311.16, 14, null, 3),
-(15, 5, 'Planck', 'type a', false, true, 351.87, 110, null, 12),
-(16, 5, 'KBDfans', 'thunderbolt', false, true, 328.35, 110, null, 6),
-(17, 5, 'GMMK', 'type a', false, true, 352.99, 31, null, 2),
+(9, 3, 'KBDfans', 'type c', true, true, 172.49, 130, null, 2),
+(10, 3, 'Pizza', 'type c', true, false, 136.4, 74, null, 10),
+(11, 3, 'KBDfans', 'microusb', false, true, 81.87, 30, null, 11),
+(12, 3, 'Pizza', 'thunderbolt', true, false, 158.25, 14, null, 1),
+(13, 3, 'Carpe', 'thunderbolt', true, false, 78.03, 20, null, 1),
+(14, 5, 'Phantom', 'type a', false, false, 211.16, 14, null, 3),
+(15, 5, 'Planck', 'type a', false, true, 51.87, 110, null, 12),
+(16, 5, 'KBDfans', 'thunderbolt', false, true, 128.35, 110, null, 6),
+(17, 5, 'GMMK', 'type a', false, true, 152.99, 31, null, 2),
 (18, 5, 'MK61', 'thunderbolt', true, true, 119.35, 127, 2000, 6),
-(19, 3, 'MK61', 'type c', true, true, 300.94, 120, null, 7),
-(20, 5, 'KBDfans', 'type c', true, true, 358.38, 119, null, 9),
+(19, 3, 'MK61', 'type c', true, true, 270.94, 120, null, 7),
+(20, 5, 'KBDfans', 'type c', true, true, 258.38, 119, null, 9),
 (21, 5, 'FaceW', 'PS/2', false, false, 316.32, 82, null, 2),
 (22, 5, 'GMMK', 'thunderbolt', false, false, 44.55, 33, 1800, 7),
-(23, 5, 'GMMK', 'thunderbolt', false, false, 349.98, 117, null, 4),
+(23, 5, 'GMMK', 'thunderbolt', false, false, 239.98, 117, null, 4),
 (24, 3, 'Phantom', 'microusb', true, true, 102.79, 128, null, 5),
 (25, 5, 'ErgoDox', 'PS/2', false, true, 55.67, 52, null, 8),
-(26, 5, 'ErgoDox', 'type a', true, true, 219.87, 124, null, 12),
+(26, 5, 'ErgoDox', 'type a', true, true, 119.87, 124, null, 12),
 (27, 5, 'Pizza', 'type c', true, false, 271.42, 29, null, 5),
 (28, 3, 'GMMK', 'microusb', true, false, 228.36, 108, null, 7),
-(29, 3, 'Carpe', 'type c', false, false, 42.73, 34, null, 9),
+(29, 3, 'Carpe', 'type c', false, false, 142.73, 34, null, 9),
 (30, 3, 'Phantom', 'microusb', true, true, 191.81, 18, null, 10),
 (31, 3, 'Carpe', 'microusb', false, true, 211.92, 27, null, 4),
 (32, 5, 'MK61', 'type a', true, true, 108.01, 71, null, 7),
@@ -717,14 +543,14 @@ INSERT INTO public."PCB" ("ID", "Pin_number", "Manufacturer", "Ports", "Hotswapp
 (37, 3, 'Pizza', 'type c', false, true, 159.96, 118, null, 8),
 (38, 3, 'Planck', 'microusb', false, false, 212.54, 111, 600, 1),
 (39, 5, 'MK61', 'thunderbolt', false, true, 180.09, 41, null, 10),
-(40, 3, 'Phantom', 'PS/2', false, true, 191.71, 123, 2000, 11),
-(41, 5, 'Carpe', 'PS/2', false, false, 387.01, 50, 1000, 2),
+(40, 3, 'Phantom', 'PS/2', false, true, 121.71, 123, 2000, 11),
+(41, 5, 'Carpe', 'PS/2', false, false, 237.01, 50, 1000, 2),
 (42, 5, 'MK61', 'type a', true, true, 187.4, 25, 1300, 5),
 (43, 5, 'Pizza', 'type a', true, true, 127.59, 106, null, 4),
-(44, 5, 'MK61', 'microusb', false, false, 375.13, 108, null, 5),
+(44, 5, 'MK61', 'microusb', false, false, 75.13, 108, null, 5),
 (45, 3, 'Carpe', 'thunderbolt', true, false, 192.35, 49, null, 2),
-(46, 5, 'Phantom', 'microusb', false, true, 345.13, 77, null, 7),
-(47, 5, 'Pizza', 'PS/2', true, false, 360.27, 113, null, 10);
+(46, 5, 'Phantom', 'microusb', false, true, 145.13, 77, null, 7),
+(47, 5, 'Pizza', 'PS/2', true, false, 260.27, 113, null, 10);
 INSERT INTO public."SWITCH" ("ID", "Colore", "Actuation_force", "Transparenza", "Led_facing", "Silent", "Pin_number", "Manufacturer", "Actuation_type", "Prezzo") VALUES
 (1, 'yellow', 48, false, 'north', 'false', 5, 'Kono', 'Linear', 0.89),
 (2, 'black', 74, false, 'north', 'false', 5, 'JWK', 'Linear', 0.65),
@@ -857,32 +683,32 @@ INSERT INTO public."TASTIERA MECCANICA" ("ID", "ID_KEYCAPS", "ID_PCB", "ID_SWITC
 (23, 43, 14, 2, 19, 28),
 (24, 96, 2, 8, 21, 16),
 (25, 9, 2, 15, 23, 24);
-INSERT INTO public."CODICE SCONTO" ("Name", "Valore") VALUES
+INSERT INTO public."CODICE SCONTO" ("Nome", "Valore") VALUES
 ('lxdevnwmxtue', 5),
 ('lahgiozbepic', 25),
 ('mvfpjutbgprs', 10);
-INSERT INTO public."ORDINE" ("NumOrdine", "Data", "ID_UTENTE", "ID_INDIRIZZO", "Name_CODICE SCONTO") VALUES
+INSERT INTO public."ORDINE" ("NumOrdine", "Data", "ID_UTENTE", "ID_INDIRIZZO", "Nome_CODICE SCONTO") VALUES
 
-(1, '04/05/2022', 67, 67, null),
-(2, '02/05/2022', 71, 71, null),
-(3, '02/05/2022', 22, 22, null),
-(4, '05/05/2022', 70, 70, null),
-(5, '01/05/2022', 78, 78, null),
-(6, '03/05/2022', 9, 9, null),
-(7, '05/05/2022', 57, 57, 'lxdevnwmxtue'),
-(8, '07/05/2022', 98, 98, null),
-(9, '02/05/2022', 44, 44, null),
-(10, '04/05/2022', 97, 97, null),
-(11, '05/05/2022', 93, 93, null),
-(12, '30/04/2022', 89, 89, null),
-(13, '01/05/2022', 58, 58, 'lahgiozbepic'),
-(14, '08/05/2022', 37, 37, 'mvfpjutbgprs'),
-(15, '04/05/2022', 75, 75, null),
-(16, '07/05/2022', 9, 9, null),
-(17, '06/05/2022', 83, 83, null),
-(18, '06/05/2022', 24, 24, null),
-(19, '03/05/2022', 44, 44, null),
-(20, '02/05/2022', 28, 28, null);
+(1, '2022-05-04', 67, 67, null),
+(2, '2022-05-02', 71, 71, null),
+(3, '2022-05-02', 22, 22, null),
+(4, '2022-05-05', 70, 70, null),
+(5, '2022-05-01', 78, 78, null),
+(6, '2022-05-03', 9, 9, null),
+(7, '2022-05-05', 57, 57, 'lxdevnwmxtue'),
+(8, '2022-05-07', 98, 98, null),
+(9, '2022-05-02', 44, 44, null),
+(10, '2022-05-04', 97, 97, null),
+(11, '2022-05-05', 93, 93, null),
+(12, '2022-04-30', 89, 89, null),
+(13, '2022-05-01', 58, 58, 'lahgiozbepic'),
+(14, '2022-05-08', 37, 37, 'mvfpjutbgprs'),
+(15, '2022-05-04', 75, 75, null),
+(16, '2022-05-07', 9, 9, null),
+(17, '2022-05-06', 83, 83, null),
+(18, '2022-05-06', 24, 24, null),
+(19, '2022-05-03', 44, 44, null),
+(20, '2022-05-02', 28, 28, null);
 INSERT INTO public."GRUPPO TASTIERE" ("ID", "NumOrdine_ORDINE", "ID_TASTIERA MECCANICA") VALUES
 
 (1, 1, 1),
@@ -909,3 +735,10 @@ INSERT INTO public."GRUPPO TASTIERE" ("ID", "NumOrdine_ORDINE", "ID_TASTIERA MEC
 (22, 19, 22),
 (23, 19, 23),
 (24, 20, 24);
+ INSERT INTO public."RECENSIONE" ("ID", "Valutazione", "Data", "Testo", "NumOrdine_ORDINE") VALUES
+
+(1, '5', '2022-05-10', 'wow', 1),
+(2, '4', '2022-05-10', 'Molto contento spedizione veloce', 1),
+(3, '1', '2022-05-10', 'Il pacco è arrivato in ritardo', 1),
+(4, '5', '2022-05-10', 'Tutto perfetto, servizio clienti impeccabile', 1),
+(5, '5', '2022-05-10', NULL , 1);
