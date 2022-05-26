@@ -93,47 +93,30 @@ int main(int argc, char **argv)
         JOIN \"TASTIERA MECCANICA\" mkb ON mkb.\"ID\" = gt.\"ID_TASTIERA MECCANICA\" \
         GROUP BY u.\"ID\" \
         HAVING count(mkb.\"ID\")>1",
-
-        "drop view if exists importo_tot_clienti; \
-        create view importo_tot_clienti as \
-        select c.mail, sum( \
-            p.prezzo * po.quantita * coalesce(r.percentualesconto * 0.01, 1) \
-        ) as tot \
-        from cliente c, ordine o, piatti_ordinati po, piatto p, ristorante r \
-        where c.mail = o.cliente and po.ordine = o.id and \
-            po.piatto = p.nome and po.ristorante = p.ristorante and \
-            p.ristorante = r.id \
-        group by c.mail; \
-        drop view if exists spese_sped_tot_clienti; \
-        create view spese_sped_tot_clienti as \
-        select c.mail, coalesce(sum(s.costospedizione), 0) as tot \
-        from cliente c, ordine o left join spedizione s on(s.ordine = o.id) \
-        where o.cliente = c.mail and c.premium = false \
-        group by c.mail; \
-        select c.nome, c.cognome, \
-            round(i.tot, 2) as importo_pagato, \
-            coalesce(s.tot, 0) as tot_spedizione, \
-            round(i.tot + coalesce(s.tot, 0), 2) as totale_pagato \
-        from cliente c, \
-            importo_tot_clienti i left join spese_sped_tot_clienti s \
-            on(i.mail = s.mail) \
-        where c.mail = i.mail \
-        order by totale_pagato desc \
-        limit 10;",
-
-        "select r.nome as ristorante, \
-        g.oraapertura as orario_di_apertura, g.orachiusura as orario_di_chiusura \
-        from ristorante r, giorno g, ( \
-            select c.mail, r.id \
-            from cliente c, ristorante r \
-            except(select ac.cliente, ap.ristorante \
-                from allergie_clienti ac, allergie_piatti ap \
-        where ac.allergene = ap.allergene) \
-                ) as cr \
-        where r.id = g.ristorante and g.data = '%s' and \
-            g.oraapertura <= '%s' and g.orachiusura >= '%s' and \
-            r.id = cr.id and cr.mail = '%s' \
-            order by cr.mail, r.id;"};
+        // asd
+        "select \"Valutazione\", count(\"ID\") \"numero recensioni\" \
+        from \"RECENSIONE\" \
+        group by \"Valutazione\" \
+        order by \"Valutazione\" desc;",
+        // asd
+        "select \"Valutazione\", count(r.\"ID\") \"numero recensioni\", round(avg((p.\"Prezzo\" + kc.\"Prezzo\" + c.\"Prezzo\" + pl.\"Prezzo\" + (s.\"Prezzo\" * l.\"N_tasti\") - COALESCE(cs.\"Valore\", 0::money))::numeric), 2) as media \
+        from \"RECENSIONE\" as r \
+        join \"ORDINE\" o ON o.\"NumOrdine\" = r.\"NumOrdine_ORDINE\" \
+        \
+        JOIN \"GRUPPO TASTIERE\" gt ON gt.\"NumOrdine_ORDINE\" = o.\"NumOrdine\" \
+        JOIN \"TASTIERA MECCANICA\" mkb ON mkb.\"ID\" = gt.\"ID_TASTIERA MECCANICA\" \
+        \
+        FULL JOIN \"CODICE SCONTO\" cs ON cs.\"Nome\" = o.\"Nome_CODICE SCONTO\" \
+        \
+        JOIN \"KEYCAPS\" AS kc ON mkb.\"ID_KEYCAPS\" = kc.\"ID\" \
+        JOIN \"PCB\"     AS p  ON mkb.\"ID_PCB\"     = p.\"ID\" \
+        JOIN \"CASE\"    AS c  ON mkb.\"ID_CASE\"    = c.\"ID\" \
+        JOIN \"PLATE\"   AS pl ON mkb.\"ID_PLATE\"   = pl.\"ID\" \
+        JOIN \"SWITCH\"  AS s  ON mkb.\"ID_SWITCH\"  = s.\"ID\" \
+        \
+        JOIN \"LAYOUT\"  AS l  ON p.\"ID_LAYOUT\" = l.\"ID\" \
+        group by \"Valutazione\" \
+        order by \"Valutazione\" desc;"};
 
     char c;
     PGresult *res;
@@ -144,6 +127,8 @@ int main(int argc, char **argv)
              << "2. per vedere il costo di ogni tastiera" << endl
              << "3. per vedere quali utenti hanno speso più di N €" << endl
              << "4. per vedere quali utenti hanno comprato più di una tastiera" << endl
+             << "5. per vedere le recensioni" << endl
+             << "6. per vedere le recensioni e la media di spesa" << endl
              << "Q. per uscire" << endl;
         cin >> c;
         switch (c)
@@ -219,10 +204,15 @@ int main(int argc, char **argv)
             PQprint(stdout, res, &options);
             break;
         case '5':
-            cout << 5;
+            res = PQexec(conn, query[4]);
+            checkResults(res, conn);
+            PQprint(stdout, res, &options);
             break;
         case '6':
-            cout << 6;
+            res = PQexec(conn, query[5]);
+            checkResults(res, conn);
+            PQprint(stdout, res, &options);
+            break;
             break;
         case 'q':
         case 'Q':
