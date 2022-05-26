@@ -47,10 +47,10 @@ int main(int argc, char **argv)
     tryConn(conn);
 
     const char *query[6] = {
-        // roba nulla
-        "SELECT \"Materiale\", \"Designer\", \"Profilo\", \"Manufacturer\", \"Prezzo\", \"Formato\", \"Size\" \
-        FROM \"KEYCAPS\" as k, \"LAYOUT\" as l \
-        WHERE l.\"ID\" = k.\"ID_LAYOUT\" \
+        // filtra per keycaps
+        "SELECT k.* ,\"Prezzo\", \"Formato\", \"Size\" \
+        FROM \"%s\" as k, \"LAYOUT\" as l \
+        WHERE l.\"ID\" = %s AND l.\"ID\" = k.\"ID_LAYOUT\" \
         ORDER BY \"Prezzo\" desc;",
 
         // costo per tastiera
@@ -146,9 +146,10 @@ int main(int argc, char **argv)
     string num;
     PGresult *res;
     const char *p;
+    char queryTemp[1500];
     while (true)
     {
-        cout << "1. per vedere (non so)" << endl
+        cout << "1. filtra componenti per layout" << endl
              << "2. per vedere il costo di ogni tastiera" << endl
              << "3. per vedere quali utenti hanno speso più di N €" << endl
              << "4. per vedere quali utenti hanno comprato più di una tastiera" << endl
@@ -157,7 +158,52 @@ int main(int argc, char **argv)
         switch (c)
         {
         case '1':
-            res = PQexec(conn, query[0]);
+            char layout[2];
+            cout << "1. ISO-IT 60%" << endl
+                 << "2. ISO-IT 65%" << endl
+                 << "3. ISO-IT TKL" << endl
+                 << "4. ISO-IT 100%" << endl
+                 << "5. ISO-DE 60%" << endl
+                 << "6. ISO-DE 65%" << endl
+                 << "7. ISO-DE TKL" << endl
+                 << "8. ISO-DE 100%" << endl
+                 << "9. ANSI-US 60%" << endl
+                 << "10. ANSI-US 65%" << endl
+                 << "11. ANSI-US TKL" << endl
+                 << "12. ANSI-US 100%" << endl;
+            cin >> layout;
+
+            if (atoi(layout) > 12)
+                cout << "Numero non valido";
+
+            cout << "1. Keycaps" << endl
+                 << "2. PCB" << endl
+                 << "3. Case" << endl
+                 << "4. Plate" << endl;
+            cin >> c;
+            switch (c)
+            {
+            case '1':
+                sprintf(queryTemp, query[0], "KEYCAPS", layout);
+                break;
+            case '2':
+                sprintf(queryTemp, query[0], "PCB", layout);
+                break;
+
+            case '3':
+                sprintf(queryTemp, query[0], "CASE", layout);
+                break;
+
+            case '4':
+                sprintf(queryTemp, query[0], "PLATE", layout);
+                break;
+
+            default:
+                cout << "Numero non valido";
+                break;
+            }
+
+            res = PQexec(conn, queryTemp);
             checkResults(res, conn);
             PQprint(stdout, res, &options);
             break;
