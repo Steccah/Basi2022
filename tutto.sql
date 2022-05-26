@@ -1,6 +1,6 @@
 -- DROP DATABASE IF EXISTS new_database;
-DROP TABLE IF EXISTS public."INDIRIZZO" CASCADE;
-CREATE TABLE public."INDIRIZZO" (
+DROP TABLE IF EXISTS "INDIRIZZO" CASCADE;
+CREATE TABLE "INDIRIZZO" (
 	"ID" serial NOT NULL,
 	"Via" varchar(60) NOT NULL,
 	"Città" varchar(30) NOT NULL,
@@ -9,8 +9,8 @@ CREATE TABLE public."INDIRIZZO" (
 	"Regione" varchar(21) NOT NULL,
 	PRIMARY KEY ("ID")
 );
-DROP TABLE IF EXISTS public."UTENTE" CASCADE;
-CREATE TABLE public."UTENTE" (
+DROP TABLE IF EXISTS "UTENTE" CASCADE;
+CREATE TABLE "UTENTE" (
 	"ID" serial NOT NULL,
 	"Nome" varchar(20) NOT NULL,
 	"Cognome" varchar(20) NOT NULL,
@@ -19,45 +19,45 @@ CREATE TABLE public."UTENTE" (
 	"Password" varchar(64),
 	"ID_INDIRIZZO" integer NOT NULL,
 	PRIMARY KEY ("ID"),
-	FOREIGN KEY ("ID_INDIRIZZO") REFERENCES public."INDIRIZZO" ("ID") MATCH FULL ON DELETE RESTRICT ON UPDATE CASCADE
+	FOREIGN KEY ("ID_INDIRIZZO") REFERENCES "INDIRIZZO" ("ID") MATCH FULL ON DELETE RESTRICT ON UPDATE CASCADE
 );
-DROP TABLE IF EXISTS public."CODICE SCONTO" CASCADE;
-CREATE TABLE public."CODICE SCONTO" (
+DROP TABLE IF EXISTS "CODICE SCONTO" CASCADE;
+CREATE TABLE "CODICE SCONTO" (
  	"Nome" varchar(12) NOT NULL,
  	"Valore" money NOT NULL,
  	PRIMARY KEY ("Nome")
 );
-DROP TABLE IF EXISTS public."ORDINE" CASCADE;
-CREATE TABLE public."ORDINE" (
+DROP TABLE IF EXISTS "ORDINE" CASCADE;
+CREATE TABLE "ORDINE" (
 	"NumOrdine" serial NOT NULL,
 	"Data" date NOT NULL,
 	"ID_UTENTE" integer NOT NULL,
 	"ID_INDIRIZZO" integer NOT NULL,
 	"Nome_CODICE SCONTO" varchar(12),
 	PRIMARY KEY ("NumOrdine"),
-	FOREIGN KEY ("ID_UTENTE") REFERENCES public."UTENTE" ("ID") MATCH FULL ON DELETE RESTRICT ON UPDATE CASCADE,
-	FOREIGN KEY ("ID_INDIRIZZO") REFERENCES public."INDIRIZZO" ("ID") MATCH FULL ON DELETE RESTRICT ON UPDATE CASCADE,
-	FOREIGN KEY ("Nome_CODICE SCONTO") REFERENCES public."CODICE SCONTO" ("Nome") MATCH FULL ON DELETE RESTRICT ON UPDATE CASCADE
+	FOREIGN KEY ("ID_UTENTE") REFERENCES "UTENTE" ("ID") MATCH FULL ON DELETE RESTRICT ON UPDATE CASCADE,
+	FOREIGN KEY ("ID_INDIRIZZO") REFERENCES "INDIRIZZO" ("ID") MATCH FULL ON DELETE RESTRICT ON UPDATE CASCADE,
+	FOREIGN KEY ("Nome_CODICE SCONTO") REFERENCES "CODICE SCONTO" ("Nome") MATCH FULL ON DELETE RESTRICT ON UPDATE CASCADE
 );
-DROP TABLE IF EXISTS public."GRUPPO TASTIERE" CASCADE;
-CREATE TABLE public."GRUPPO TASTIERE" (
+DROP TABLE IF EXISTS "GRUPPO TASTIERE" CASCADE;
+CREATE TABLE "GRUPPO TASTIERE" (
 	"ID" serial NOT NULL,
 	"NumOrdine_ORDINE" integer NOT NULL,
 	"ID_TASTIERA MECCANICA" integer NOT NULL,
 	PRIMARY KEY ("ID"),
-	FOREIGN KEY ("NumOrdine_ORDINE") REFERENCES public."ORDINE" ("NumOrdine") MATCH FULL ON DELETE RESTRICT ON UPDATE CASCADE,
-	FOREIGN KEY ("ID_TASTIERA MECCANICA") REFERENCES public."TASTIERA MECCANICA" ("ID") MATCH FULL ON DELETE RESTRICT ON UPDATE CASCADE
+	FOREIGN KEY ("NumOrdine_ORDINE") REFERENCES "ORDINE" ("NumOrdine") MATCH FULL ON DELETE RESTRICT ON UPDATE CASCADE,
+	FOREIGN KEY ("ID_TASTIERA MECCANICA") REFERENCES "TASTIERA MECCANICA" ("ID") MATCH FULL ON DELETE RESTRICT ON UPDATE CASCADE
 );
-DROP TABLE IF EXISTS public."LAYOUT" CASCADE;
-CREATE TABLE public."LAYOUT" (
+DROP TABLE IF EXISTS "LAYOUT" CASCADE;
+CREATE TABLE "LAYOUT" (
 	"ID" serial NOT NULL,
 	"Formato" varchar(7) NOT NULL,
 	"Size" varchar(4) NOT NULL,
 	"N_tasti" smallint NOT NULL,
 	PRIMARY KEY ("ID")
 );
-DROP TABLE IF EXISTS public."KEYCAPS" CASCADE;
-CREATE TABLE public."KEYCAPS" (
+DROP TABLE IF EXISTS "KEYCAPS" CASCADE;
+CREATE TABLE "KEYCAPS" (
 	"ID" serial NOT NULL,
 	"Materiale" varchar(40) NOT NULL,
 	"Designer" varchar(40) NOT NULL,
@@ -68,10 +68,10 @@ CREATE TABLE public."KEYCAPS" (
 	"Quantità" smallint NOT NULL,
 	"ID_LAYOUT" integer NOT NULL,
 	PRIMARY KEY ("ID"),
-	FOREIGN KEY ("ID_LAYOUT") REFERENCES public."LAYOUT" ("ID") MATCH FULL ON DELETE RESTRICT ON UPDATE CASCADE
+	FOREIGN KEY ("ID_LAYOUT") REFERENCES "LAYOUT" ("ID") MATCH FULL ON DELETE RESTRICT ON UPDATE CASCADE
 );
-DROP TABLE IF EXISTS public."PCB" CASCADE;
-CREATE TABLE public."PCB" (
+DROP TABLE IF EXISTS "PCB" CASCADE;
+CREATE TABLE "PCB" (
 	"ID" serial NOT NULL,
 	"Pin_number" smallint NOT NULL,
 	"Manufacturer" varchar(20) NOT NULL,
@@ -83,10 +83,10 @@ CREATE TABLE public."PCB" (
 	"Capacità_batteria" smallint,
 	"ID_LAYOUT" integer NOT NULL,
 	PRIMARY KEY ("ID"),
-	FOREIGN KEY ("ID_LAYOUT") REFERENCES public."LAYOUT" ("ID") MATCH FULL ON DELETE RESTRICT ON UPDATE CASCADE
+	FOREIGN KEY ("ID_LAYOUT") REFERENCES "LAYOUT" ("ID") MATCH FULL ON DELETE RESTRICT ON UPDATE CASCADE
 );
-DROP TABLE IF EXISTS public."SWITCH" CASCADE;
-CREATE TABLE public."SWITCH" (
+DROP TABLE IF EXISTS "SWITCH" CASCADE;
+CREATE TABLE "SWITCH" (
 	"ID" smallint NOT NULL,
 	"Colore" varchar(20),
 	"Actuation_force" smallint,
@@ -99,8 +99,8 @@ CREATE TABLE public."SWITCH" (
 	"Prezzo" money,
 	PRIMARY KEY ("ID")
 );
-DROP TABLE IF EXISTS public."PLATE" CASCADE;
-CREATE TABLE public."PLATE" (
+DROP TABLE IF EXISTS "PLATE" CASCADE;
+CREATE TABLE "PLATE" (
 	"ID" serial NOT NULL,
 	"Materiale" varchar(40) NOT NULL,
 	"Manufacturer" varchar(20) NOT NULL,
@@ -108,10 +108,10 @@ CREATE TABLE public."PLATE" (
 	"Quantità" smallint NOT NULL,
 	"ID_LAYOUT" integer NOT NULL,
 	PRIMARY KEY ("ID"),
-	FOREIGN KEY ("ID_LAYOUT") REFERENCES public."LAYOUT" ("ID") MATCH FULL ON DELETE RESTRICT ON UPDATE CASCADE
+	FOREIGN KEY ("ID_LAYOUT") REFERENCES "LAYOUT" ("ID") MATCH FULL ON DELETE RESTRICT ON UPDATE CASCADE
 );
-DROP TABLE IF EXISTS public."CASE" CASCADE;
-CREATE TABLE public."CASE" (
+DROP TABLE IF EXISTS "CASE" CASCADE;
+CREATE TABLE "CASE" (
 	"ID" serial NOT NULL,
 	"Colore" varchar(20),
 	"Materiale" varchar(20) NOT NULL,
@@ -120,11 +120,11 @@ CREATE TABLE public."CASE" (
 	"Quantità" smallint NOT NULL,
 	"ID_LAYOUT" integer NOT NULL,
 	PRIMARY KEY ("ID"),
-	FOREIGN KEY ("ID_LAYOUT") REFERENCES public."LAYOUT" ("ID") MATCH FULL ON DELETE RESTRICT ON UPDATE CASCADE
+	FOREIGN KEY ("ID_LAYOUT") REFERENCES "LAYOUT" ("ID") MATCH FULL ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
-DROP TABLE IF EXISTS public."TASTIERA MECCANICA" CASCADE;
-CREATE TABLE public."TASTIERA MECCANICA" (
+DROP TABLE IF EXISTS "TASTIERA MECCANICA" CASCADE;
+CREATE TABLE "TASTIERA MECCANICA" (
 	"ID" serial NOT NULL,
 	"ID_KEYCAPS" integer NOT NULL,
 	"ID_PCB" integer NOT NULL,
@@ -132,26 +132,26 @@ CREATE TABLE public."TASTIERA MECCANICA" (
 	"ID_PLATE" integer NOT NULL,
 	"ID_CASE" integer NOT NULL,
 	PRIMARY KEY ("ID"),
-	FOREIGN KEY ("ID_KEYCAPS") REFERENCES public."KEYCAPS" ("ID") MATCH FULL ON DELETE RESTRICT ON UPDATE CASCADE,
-	FOREIGN KEY ("ID_CASE") REFERENCES public."CASE" ("ID") MATCH FULL ON DELETE RESTRICT ON UPDATE CASCADE,
-	FOREIGN KEY ("ID_PCB") REFERENCES public."PCB" ("ID") MATCH FULL ON DELETE RESTRICT ON UPDATE CASCADE,
-	FOREIGN KEY ("ID_PLATE") REFERENCES public."PLATE" ("ID") MATCH FULL ON DELETE RESTRICT ON UPDATE CASCADE,
-	FOREIGN KEY ("ID_SWITCH") REFERENCES public."SWITCH" ("ID") MATCH FULL ON DELETE RESTRICT ON UPDATE CASCADE
+	FOREIGN KEY ("ID_KEYCAPS") REFERENCES "KEYCAPS" ("ID") MATCH FULL ON DELETE RESTRICT ON UPDATE CASCADE,
+	FOREIGN KEY ("ID_CASE") REFERENCES "CASE" ("ID") MATCH FULL ON DELETE RESTRICT ON UPDATE CASCADE,
+	FOREIGN KEY ("ID_PCB") REFERENCES "PCB" ("ID") MATCH FULL ON DELETE RESTRICT ON UPDATE CASCADE,
+	FOREIGN KEY ("ID_PLATE") REFERENCES "PLATE" ("ID") MATCH FULL ON DELETE RESTRICT ON UPDATE CASCADE,
+	FOREIGN KEY ("ID_SWITCH") REFERENCES "SWITCH" ("ID") MATCH FULL ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
 --SET NULL ON UPDATE CASCADE;
-DROP TABLE IF EXISTS public."RECENSIONE" CASCADE;
-CREATE TABLE public."RECENSIONE" (
+DROP TABLE IF EXISTS "RECENSIONE" CASCADE;
+CREATE TABLE "RECENSIONE" (
 	"ID" smallint NOT NULL,
 	"Valutazione" varchar(1) NOT NULL,
 	"Data" date NOT NULL,
 	"Testo" varchar(140),
 	"NumOrdine_ORDINE" integer NOT NULL,
 	PRIMARY KEY ("ID"),
-	FOREIGN KEY ("NumOrdine_ORDINE") REFERENCES public."ORDINE" ("NumOrdine") MATCH FULL ON DELETE RESTRICT ON UPDATE CASCADE,
+	FOREIGN KEY ("NumOrdine_ORDINE") REFERENCES "ORDINE" ("NumOrdine") MATCH FULL ON DELETE RESTRICT ON UPDATE CASCADE,
 	UNIQUE ("NumOrdine_ORDINE")
 );
-INSERT INTO public."LAYOUT" ("ID", "Formato", "Size", "N_tasti") VALUES
+INSERT INTO "LAYOUT" ("ID", "Formato", "Size", "N_tasti") VALUES
 (E'1', E'ISO-IT', E'60', E'68'),
 (E'2', E'ISO-IT', E'65', E'67'),
 (E'3', E'ISO-IT', E'TKL', E'87'),
@@ -164,7 +164,7 @@ INSERT INTO public."LAYOUT" ("ID", "Formato", "Size", "N_tasti") VALUES
 (E'10', E'ANSI-US', E'65', E'67'),
 (E'11', E'ANSI-US', E'TKL', E'87'),
 (E'12', E'ANSI-US', E'100', E'104');
-INSERT INTO public."INDIRIZZO" ("ID", "Via", "Città", "Cap", "Provincia", "Regione") VALUES
+INSERT INTO "INDIRIZZO" ("ID", "Via", "Città", "Cap", "Provincia", "Regione") VALUES
 (1, '58 American Terrace', 'Palermo', '90141', 'PA', 'Sicilia'),
 (2, '701 Eastlawn Terrace', 'Genova', '16124', 'GE', 'Liguria'),
 (3, '59 Annamark Hill', 'Genova', '16157', 'GE', 'Liguria'),
@@ -265,7 +265,7 @@ INSERT INTO public."INDIRIZZO" ("ID", "Via", "Città", "Cap", "Provincia", "Regi
 (98, '9076 Bartelt Hill', 'Bologna', '40128', 'BO', 'Emilia-Romagna'),
 (99, '91081 South Park', 'Bologna', '40141', 'BO', 'Emilia-Romagna'),
 (100, '45 Loomis Terrace', 'Laspezia', '19139', 'SP', 'Liguria');
-insert into public."UTENTE" ("ID", "Nome", "Cognome", "Email", "Telefono", "ID_INDIRIZZO") values
+insert into "UTENTE" ("ID", "Nome", "Cognome", "Email", "Telefono", "ID_INDIRIZZO") values
 (1, 'Myrna', 'Oram', 'moram0@gov.uk', '2781816201', 1),
 (2, 'Nahum', 'Satford', 'nsatford1@harvard.edu', '1277023494', 2),
 (3, 'Camille', 'Blastock', 'cblastock2@paypal.com', '3401560975', 3),
@@ -370,7 +370,7 @@ insert into public."UTENTE" ("ID", "Nome", "Cognome", "Email", "Telefono", "ID_I
 (102, 'Moore', 'Coughtrey', 'mcoughtrey2t@github.io', '4753812830', 67),
 (103, 'Amata', 'Bulmer', 'abulmer2u@wsj.com', '6055300530', 88),
 (104, 'Ive', 'Kernermann', 'ikernermann2v@aboutads.info', '8513658284', 34);
-INSERT INTO public."KEYCAPS" ("ID", "Materiale", "Designer", "Shine_through", "Profilo", "Manufacturer", "Prezzo", "Quantità", "ID_LAYOUT") VALUES
+INSERT INTO "KEYCAPS" ("ID", "Materiale", "Designer", "Shine_through", "Profilo", "Manufacturer", "Prezzo", "Quantità", "ID_LAYOUT") VALUES
 (1, 'PBT', 'qabercromby0', false, 'OEM', 'KAT', 174.94, 503, 9),
 (2, 'ABS', 'wdinesen1', true, 'SA', 'Ducky', 200.73, 480, 6),
 (3, 'PBT', 'ysnowman2', false, 'CHERRY', 'RAMAWORKS', 196.84, 733, 6),
@@ -471,7 +471,7 @@ INSERT INTO public."KEYCAPS" ("ID", "Materiale", "Designer", "Shine_through", "P
 (98, 'PBT', 'schansonne2p', true, 'CHERRY', 'RAMAWORKS', 193.66, 415, 12),
 (99, 'ABS', 'dwildes2q', true, 'CHERRY', 'GMK', 91.19, 363, 9),
 (100, 'Alluminio', 'esanson2r', true, 'OEM', 'RAMAWORKS', 63.82, 353, 3);
-INSERT INTO public."PCB" ("ID", "Pin_number", "Manufacturer", "Ports", "Hotswappable",  "Retroilluminazione", "Prezzo", "Quantità", "Capacità_batteria", "ID_LAYOUT") VALUES
+INSERT INTO "PCB" ("ID", "Pin_number", "Manufacturer", "Ports", "Hotswappable",  "Retroilluminazione", "Prezzo", "Quantità", "Capacità_batteria", "ID_LAYOUT") VALUES
 (1, 5, 'Carpe', 'thunderbolt', true, false, 169.3, 108, null, 2),
 (2, 3, 'Pizza', 'PS/2', false, true, 153.94, 39, null, 3),
 (3, 5, 'Pizza', 'type a', true, true, 113.07, 41, null, 7),
@@ -519,7 +519,7 @@ INSERT INTO public."PCB" ("ID", "Pin_number", "Manufacturer", "Ports", "Hotswapp
 (45, 3, 'Carpe', 'thunderbolt', true, false, 192.35, 49, null, 2),
 (46, 5, 'Phantom', 'microusb', false, true, 145.13, 77, null, 7),
 (47, 5, 'Pizza', 'PS/2', true, false, 260.27, 113, null, 10);
-INSERT INTO public."SWITCH" ("ID", "Colore", "Actuation_force", "Transparenza", "Led_facing", "Silent", "Pin_number", "Manufacturer", "Actuation_type", "Prezzo") VALUES
+INSERT INTO "SWITCH" ("ID", "Colore", "Actuation_force", "Transparenza", "Led_facing", "Silent", "Pin_number", "Manufacturer", "Actuation_type", "Prezzo") VALUES
 (1, 'yellow', 48, false, 'north', 'false', 5, 'Kono', 'Linear', 0.89),
 (2, 'black', 74, false, 'north', 'false', 5, 'JWK', 'Linear', 0.65),
 (3, 'black', 29, true, 'south', 'false', 3, 'Tecsee', 'Linear', 0.71),
@@ -550,7 +550,7 @@ INSERT INTO public."SWITCH" ("ID", "Colore", "Actuation_force", "Transparenza", 
 (28, 'silver', 34, false, 'south', 'true', 3, 'AKKO', 'Linear', 0.37),
 (29, 'red', 51, false, 'south', 'true', 3, 'gateron', 'Linear', 0.32),
 (30, 'blue', 69, false, 'south', 'false', 5, 'Tungsten', 'Clicky', 0.39);
-INSERT INTO public."PLATE" ("ID", "Materiale", "Manufacturer", "Prezzo", "Quantità", "ID_LAYOUT") VALUES
+INSERT INTO "PLATE" ("ID", "Materiale", "Manufacturer", "Prezzo", "Quantità", "ID_LAYOUT") VALUES
 (1, 'ottone', 'GMMK', 17.19, 35, 1),
 (2, 'legno', 'MK', 15.13, 34, 6),
 (3, 'legno', 'MK', 11.04, 30, 10),
@@ -582,7 +582,7 @@ INSERT INTO public."PLATE" ("ID", "Materiale", "Manufacturer", "Prezzo", "Quanti
 (29, 'legno', 'GMMK', 19.67, 79, 4),
 (30, 'alluminio', 'MK', 13.89, 27, 9),
 (31, 'alluminio', 'MK', 10.51, 31, 1);
-INSERT INTO public."CASE" ("ID", "Colore", "Materiale", "Manufacturer", "Prezzo", "Quantità", "ID_LAYOUT") VALUES
+INSERT INTO "CASE" ("ID", "Colore", "Materiale", "Manufacturer", "Prezzo", "Quantità", "ID_LAYOUT") VALUES
 (1, 'Oro', 'plastica', 'KBDfans', 11.4, 44, 1),
 (2, 'Rosso carminio', 'alluminio', 'KBDfans', 15.85, 14, 9),
 (3, 'Viola', 'plastica', 'KBDfans', 15.67, 21, 11),
@@ -617,7 +617,7 @@ INSERT INTO public."CASE" ("ID", "Colore", "Materiale", "Manufacturer", "Prezzo"
 (32, 'Marrone', 'alluminio', 'vortex', 17.1, 69, 1),
 (33, 'Azzurro', 'alluminio', 'varmilio', 12.22, 45, 2),
 (34, 'Bianco', 'alluminio', 'varmilio', 17.02, 33, 2);
-INSERT INTO public."TASTIERA MECCANICA" ("ID", "ID_KEYCAPS", "ID_PCB", "ID_SWITCH", "ID_PLATE", "ID_CASE") VALUES
+INSERT INTO "TASTIERA MECCANICA" ("ID", "ID_KEYCAPS", "ID_PCB", "ID_SWITCH", "ID_PLATE", "ID_CASE") VALUES
 -- keycaps, pcb, switch, plate, case
 -- layout 11
 (1, 60, 40, 23, 22, 4),
@@ -651,11 +651,11 @@ INSERT INTO public."TASTIERA MECCANICA" ("ID", "ID_KEYCAPS", "ID_PCB", "ID_SWITC
 (23, 43, 14, 2, 19, 28),
 (24, 96, 2, 8, 21, 16),
 (25, 9, 2, 15, 23, 24);
-INSERT INTO public."CODICE SCONTO" ("Nome", "Valore") VALUES
+INSERT INTO "CODICE SCONTO" ("Nome", "Valore") VALUES
 ('lxdevnwmxtue', 5),
 ('lahgiozbepic', 25),
 ('mvfpjutbgprs', 10);
-INSERT INTO public."ORDINE" ("NumOrdine", "Data", "ID_UTENTE", "ID_INDIRIZZO", "Nome_CODICE SCONTO") VALUES
+INSERT INTO "ORDINE" ("NumOrdine", "Data", "ID_UTENTE", "ID_INDIRIZZO", "Nome_CODICE SCONTO") VALUES
 
 (1, '2022-05-04', 67, 67, null),
 (2, '2022-05-02', 71, 71, null),
@@ -677,7 +677,7 @@ INSERT INTO public."ORDINE" ("NumOrdine", "Data", "ID_UTENTE", "ID_INDIRIZZO", "
 (18, '2022-05-06', 24, 24, null),
 (19, '2022-05-03', 44, 44, null),
 (20, '2022-05-02', 28, 28, null);
-INSERT INTO public."GRUPPO TASTIERE" ("ID", "NumOrdine_ORDINE", "ID_TASTIERA MECCANICA") VALUES
+INSERT INTO "GRUPPO TASTIERE" ("ID", "NumOrdine_ORDINE", "ID_TASTIERA MECCANICA") VALUES
 
 (1, 1, 1),
 (2, 2, 2),
@@ -703,7 +703,7 @@ INSERT INTO public."GRUPPO TASTIERE" ("ID", "NumOrdine_ORDINE", "ID_TASTIERA MEC
 (22, 19, 22),
 (23, 19, 23),
 (24, 20, 24);
- INSERT INTO public."RECENSIONE" ("ID", "Valutazione", "Data", "Testo", "NumOrdine_ORDINE") VALUES
+ INSERT INTO "RECENSIONE" ("ID", "Valutazione", "Data", "Testo", "NumOrdine_ORDINE") VALUES
 
 (1, '5', '2022-05-08', 'wow', 9),
 (2, '4', '2022-05-10', 'Molto contento spedizione veloce', 10),
