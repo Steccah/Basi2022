@@ -47,7 +47,7 @@ int main(int argc, char **argv)
     tryConn(conn);
 
     const char *query[6] = {
-        // filtra per keycaps
+        // filtra per layout e pezzo
         "SELECT k.* ,\"Prezzo\", \"Formato\", \"Size\" \
         FROM \"%s\" as k, \"LAYOUT\" as l \
         WHERE l.\"ID\" = %s AND l.\"ID\" = k.\"ID_LAYOUT\" \
@@ -93,12 +93,17 @@ int main(int argc, char **argv)
         JOIN \"TASTIERA MECCANICA\" mkb ON mkb.\"ID\" = gt.\"ID_TASTIERA MECCANICA\" \
         GROUP BY u.\"ID\" \
         HAVING count(mkb.\"ID\")>1",
-        // asd
-        "select \"Valutazione\", count(\"ID\") \"numero recensioni\" \
-        from \"RECENSIONE\" \
-        group by \"Valutazione\" \
-        order by \"Valutazione\" desc;",
-        // asd
+
+        // quanti utenti per regione
+        "select count(u.\"ID\") \"Numero di utenti\", \"Regione\" \
+        from \"UTENTE\" u \
+        JOIN \"INDIRIZZO\" i \
+        ON u.\"ID_INDIRIZZO\" = i.\"ID\" \
+        GROUP BY i.\"Regione\" \
+        HAVING count(u.\"ID\") > 5 \
+        ORDER BY count(u.\"ID\");",
+
+        // valutazioni ragruppate e la media di spesa
         "select \"Valutazione\", count(r.\"ID\") \"numero recensioni\", round(avg((p.\"Prezzo\" + kc.\"Prezzo\" + c.\"Prezzo\" + pl.\"Prezzo\" + (s.\"Prezzo\" * l.\"N_tasti\") - COALESCE(cs.\"Valore\", 0::money))::numeric), 2) as media \
         from \"RECENSIONE\" as r \
         join \"ORDINE\" o ON o.\"NumOrdine\" = r.\"NumOrdine_ORDINE\" \
@@ -127,8 +132,8 @@ int main(int argc, char **argv)
              << "2. per vedere il costo di ogni tastiera" << endl
              << "3. per vedere quali utenti hanno speso più di N €" << endl
              << "4. per vedere quali utenti hanno comprato più di una tastiera" << endl
-             << "5. per vedere le recensioni" << endl
-             << "6. per vedere le recensioni e la media di spesa" << endl
+             << "5. per vedere il numero di utenti divisi per regione" << endl
+             << "6. per vedere le valutazioni ragruppate e la media di spesa" << endl
              << "Q. per uscire" << endl;
         cin >> c;
         switch (c)
