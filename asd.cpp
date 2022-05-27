@@ -54,7 +54,7 @@ int main(int argc, char **argv)
         ORDER BY \"Prezzo\" desc;",
 
         // costo per tastiera
-        "SELECT mkb.\"ID\", (p.\"Prezzo\" + kc.\"Prezzo\" + c.\"Prezzo\" + pl.\"Prezzo\" + (s.\"Prezzo\" * l.\"N_tasti\")) totale \
+        "SELECT mkb.\"ID\", (p.\"Prezzo\" + kc.\"Prezzo\" + c.\"Prezzo\" + pl.\"Prezzo\" + (s.\"Prezzo\" * l.\"N_tasti\")) Totale \
         FROM \"TASTIERA MECCANICA\" AS mkb \
         JOIN \"KEYCAPS\" AS kc ON mkb.\"ID_KEYCAPS\" = kc.\"ID\" \
         JOIN \"PCB\"     AS p  ON mkb.\"ID_PCB\"     = p.\"ID\" \
@@ -86,7 +86,7 @@ int main(int argc, char **argv)
         ORDER BY totale desc;",
 
         // utenti con più di una tastiera
-        "SELECT u.\"Nome\", u.\"Cognome\", count(mkb.\"ID\") \
+        "SELECT u.\"Nome\", u.\"Cognome\", count(mkb.\"ID\") \"Numero di tastiere\" \
         from \"UTENTE\" u \
         JOIN \"ORDINE\" o ON o.\"ID_UTENTE\" = u.\"ID\" \
         JOIN \"GRUPPO TASTIERE\" gt ON gt.\"NumOrdine_ORDINE\" = o.\"NumOrdine\" \
@@ -132,7 +132,7 @@ int main(int argc, char **argv)
              << "2. per vedere il costo di ogni tastiera" << endl
              << "3. per vedere quali utenti hanno speso più di N €" << endl
              << "4. per vedere quali utenti hanno comprato più di una tastiera" << endl
-             << "5. per vedere il numero di utenti divisi per regione" << endl
+             << "5. per vedere le regioni che abbiano più di 5 utenti" << endl
              << "6. per vedere le valutazioni ragruppate e la media di spesa" << endl
              << "Q. per uscire" << endl;
         cin >> c;
