@@ -56,12 +56,12 @@ int main(int argc, char **argv)
         // costo per tastiera
         "SELECT mkb.\"ID\", (p.\"Prezzo\" + kc.\"Prezzo\" + c.\"Prezzo\" + pl.\"Prezzo\" + (s.\"Prezzo\" * l.\"N_tasti\")) Totale \
         FROM \"TASTIERA MECCANICA\" AS mkb \
-        JOIN \"KEYCAPS\" AS kc ON mkb.\"ID_KEYCAPS\" = kc.\"ID\" \
-        JOIN \"PCB\"     AS p  ON mkb.\"ID_PCB\"     = p.\"ID\" \
-        JOIN \"CASE\"    AS c  ON mkb.\"ID_CASE\"    = c.\"ID\" \
-        JOIN \"PLATE\"   AS pl ON mkb.\"ID_PLATE\"   = pl.\"ID\" \
-        JOIN \"SWITCH\"  AS s  ON mkb.\"ID_SWITCH\"  = s.\"ID\" \
-        JOIN \"LAYOUT\"  AS l  ON p.\"ID_LAYOUT\" = l.\"ID\";", // il layout serve per il numero di switch
+        JOIN (SELECT \"ID\", \"Prezzo\" FROM \"KEYCAPS\")          AS kc ON mkb.\"ID_KEYCAPS\" = kc.\"ID\" \
+        JOIN (SELECT \"ID\", \"Prezzo\", \"ID_LAYOUT\" FROM \"PCB\") AS p  ON mkb.\"ID_PCB\"     = p.\"ID\" \
+        JOIN (SELECT \"ID\", \"Prezzo\" FROM \"CASE\")             AS c  ON mkb.\"ID_CASE\"    = c.\"ID\" \
+        JOIN (SELECT \"ID\", \"Prezzo\" FROM \"PLATE\")            AS pl ON mkb.\"ID_PLATE\"   = pl.\"ID\" \
+        JOIN (SELECT \"ID\", \"Prezzo\" FROM \"SWITCH\")           AS s  ON mkb.\"ID_SWITCH\"  = s.\"ID\" \
+        JOIN \"LAYOUT\" AS l  ON p.\"ID_LAYOUT\" = l.\"ID\";", // il layout serve per il numero di switch
 
         // soldi spesi per utente
         "SELECT u.\"Nome\", u.\"Cognome\", mkb.\"ID\", sum(p.\"Prezzo\" + kc.\"Prezzo\" + c.\"Prezzo\" + pl.\"Prezzo\" + (s.\"Prezzo\" * l.\"N_tasti\") - COALESCE(cs.\"Valore\", 0::money)) as totale \
@@ -73,13 +73,13 @@ int main(int argc, char **argv)
         \
         FULL JOIN \"CODICE SCONTO\" cs ON cs.\"Nome\" = o.\"Nome_CODICE SCONTO\" \
         \
-        JOIN \"KEYCAPS\" AS kc ON mkb.\"ID_KEYCAPS\" = kc.\"ID\" \
-        JOIN \"PCB\"     AS p  ON mkb.\"ID_PCB\"     = p.\"ID\" \
-        JOIN \"CASE\"    AS c  ON mkb.\"ID_CASE\"    = c.\"ID\" \
-        JOIN \"PLATE\"   AS pl ON mkb.\"ID_PLATE\"   = pl.\"ID\" \
-        JOIN \"SWITCH\"  AS s  ON mkb.\"ID_SWITCH\"  = s.\"ID\" \
+        JOIN (SELECT \"ID\", \"Prezzo\" FROM \"KEYCAPS\")          AS kc ON mkb.\"ID_KEYCAPS\" = kc.\"ID\" \
+        JOIN (SELECT \"ID\", \"Prezzo\", \"ID_LAYOUT\" FROM \"PCB\") AS p  ON mkb.\"ID_PCB\"     = p.\"ID\" \
+        JOIN (SELECT \"ID\", \"Prezzo\" FROM \"CASE\")             AS c  ON mkb.\"ID_CASE\"    = c.\"ID\" \
+        JOIN (SELECT \"ID\", \"Prezzo\" FROM \"PLATE\")            AS pl ON mkb.\"ID_PLATE\"   = pl.\"ID\" \
+        JOIN (SELECT \"ID\", \"Prezzo\" FROM \"SWITCH\")           AS s  ON mkb.\"ID_SWITCH\"  = s.\"ID\" \
         \
-        JOIN \"LAYOUT\"  AS l  ON p.\"ID_LAYOUT\" = l.\"ID\" \
+        JOIN \"LAYOUT\" AS l  ON p.\"ID_LAYOUT\" = l.\"ID\" \
         \
         GROUP BY u.\"ID\", mkb.\"ID\" \
         HAVING sum(p.\"Prezzo\" + kc.\"Prezzo\" + c.\"Prezzo\" + pl.\"Prezzo\" + (s.\"Prezzo\" * l.\"N_tasti\") - COALESCE(cs.\"Valore\", 0::money)) > %s::money \
@@ -113,13 +113,13 @@ int main(int argc, char **argv)
         \
         FULL JOIN \"CODICE SCONTO\" cs ON cs.\"Nome\" = o.\"Nome_CODICE SCONTO\" \
         \
-        JOIN \"KEYCAPS\" AS kc ON mkb.\"ID_KEYCAPS\" = kc.\"ID\" \
-        JOIN \"PCB\"     AS p  ON mkb.\"ID_PCB\"     = p.\"ID\" \
-        JOIN \"CASE\"    AS c  ON mkb.\"ID_CASE\"    = c.\"ID\" \
-        JOIN \"PLATE\"   AS pl ON mkb.\"ID_PLATE\"   = pl.\"ID\" \
-        JOIN \"SWITCH\"  AS s  ON mkb.\"ID_SWITCH\"  = s.\"ID\" \
+        JOIN (SELECT \"ID\", \"Prezzo\" FROM \"KEYCAPS\")          AS kc ON mkb.\"ID_KEYCAPS\" = kc.\"ID\" \
+        JOIN (SELECT \"ID\", \"Prezzo\", \"ID_LAYOUT\" FROM \"PCB\") AS p  ON mkb.\"ID_PCB\"     = p.\"ID\" \
+        JOIN (SELECT \"ID\", \"Prezzo\" FROM \"CASE\")             AS c  ON mkb.\"ID_CASE\"    = c.\"ID\" \
+        JOIN (SELECT \"ID\", \"Prezzo\" FROM \"PLATE\")            AS pl ON mkb.\"ID_PLATE\"   = pl.\"ID\" \
+        JOIN (SELECT \"ID\", \"Prezzo\" FROM \"SWITCH\")           AS s  ON mkb.\"ID_SWITCH\"  = s.\"ID\" \
         \
-        JOIN \"LAYOUT\"  AS l  ON p.\"ID_LAYOUT\" = l.\"ID\" \
+        JOIN \"LAYOUT\" AS l  ON p.\"ID_LAYOUT\" = l.\"ID\" \
         group by \"Valutazione\" \
         order by \"Valutazione\" desc;"};
 
