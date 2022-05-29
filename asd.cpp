@@ -48,7 +48,7 @@ int main(int argc, char **argv)
 
     const char *query[6] = {
         // filtra per layout e pezzo
-        "SELECT k.* ,\"Prezzo\", \"Formato\", \"Size\" \
+        "SELECT k.* \
         FROM \"%s\" as k, \"LAYOUT\" as l \
         WHERE l.\"ID\" = %s AND l.\"ID\" = k.\"ID_LAYOUT\" \
         ORDER BY \"Prezzo\" desc;",
