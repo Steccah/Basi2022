@@ -86,7 +86,7 @@ CREATE TABLE "PCB" (
 );
 DROP TABLE IF EXISTS "SWITCH" CASCADE;
 CREATE TABLE "SWITCH" (
-	"ID" smallint NOT NULL,
+	"ID" serial NOT NULL,
 	"Colore" varchar(20),
 	"Actuation_force" smallint,
 	"Transparenza" bool,
@@ -138,7 +138,7 @@ CREATE TABLE "TASTIERA MECCANICA" (
 );
 DROP TABLE IF EXISTS "RECENSIONE" CASCADE;
 CREATE TABLE "RECENSIONE" (
-	"ID" smallint NOT NULL,
+	"ID" serial NOT NULL,
 	"Valutazione" varchar(1) NOT NULL,
 	"Data" date NOT NULL,
 	"Testo" varchar(140),
