@@ -54,17 +54,18 @@ int main(int argc, char **argv)
         ORDER BY \"Prezzo\" desc;",
 
         // costo per tastiera
-        "SELECT mkb.\"ID\", (p.\"Prezzo\" + kc.\"Prezzo\" + c.\"Prezzo\" + pl.\"Prezzo\" + (s.\"Prezzo\" * l.\"N_tasti\")) Totale \
+        "SELECT (p.\"Prezzo\" + kc.\"Prezzo\" + c.\"Prezzo\" + pl.\"Prezzo\" + (s.\"Prezzo\" * l.\"N_tasti\")) Totale \
         FROM \"TASTIERA MECCANICA\" AS mkb \
         JOIN (SELECT \"ID\", \"Prezzo\" FROM \"KEYCAPS\")          AS kc ON mkb.\"ID_KEYCAPS\" = kc.\"ID\" \
         JOIN (SELECT \"ID\", \"Prezzo\", \"ID_LAYOUT\" FROM \"PCB\") AS p  ON mkb.\"ID_PCB\"     = p.\"ID\" \
         JOIN (SELECT \"ID\", \"Prezzo\" FROM \"CASE\")             AS c  ON mkb.\"ID_CASE\"    = c.\"ID\" \
         JOIN (SELECT \"ID\", \"Prezzo\" FROM \"PLATE\")            AS pl ON mkb.\"ID_PLATE\"   = pl.\"ID\" \
         JOIN (SELECT \"ID\", \"Prezzo\" FROM \"SWITCH\")           AS s  ON mkb.\"ID_SWITCH\"  = s.\"ID\" \
-        JOIN \"LAYOUT\" AS l  ON p.\"ID_LAYOUT\" = l.\"ID\";", // il layout serve per il numero di switch
+        JOIN \"LAYOUT\" AS l  ON p.\"ID_LAYOUT\" = l.\"ID\" \
+        ORDER BY Totale desc;", // il layout serve per il numero di switch
 
         // soldi spesi per utente
-        "SELECT u.\"Nome\", u.\"Cognome\", mkb.\"ID\", sum(p.\"Prezzo\" + kc.\"Prezzo\" + c.\"Prezzo\" + pl.\"Prezzo\" + (s.\"Prezzo\" * l.\"N_tasti\") - COALESCE(cs.\"Valore\", 0::money)) as totale \
+        "SELECT u.\"Nome\", u.\"Cognome\", sum(p.\"Prezzo\" + kc.\"Prezzo\" + c.\"Prezzo\" + pl.\"Prezzo\" + (s.\"Prezzo\" * l.\"N_tasti\") - COALESCE(cs.\"Valore\", 0::money)) as Totale \
         from \"UTENTE\" u \
         JOIN \"INDIRIZZO\" i ON u.\"ID_INDIRIZZO\" = i.\"ID\" \
         JOIN \"ORDINE\" o ON o.\"ID_UTENTE\" = u.\"ID\" \
@@ -81,9 +82,9 @@ int main(int argc, char **argv)
         \
         JOIN \"LAYOUT\" AS l  ON p.\"ID_LAYOUT\" = l.\"ID\" \
         \
-        GROUP BY u.\"ID\", mkb.\"ID\" \
+        GROUP BY u.\"ID\" \
         HAVING sum(p.\"Prezzo\" + kc.\"Prezzo\" + c.\"Prezzo\" + pl.\"Prezzo\" + (s.\"Prezzo\" * l.\"N_tasti\") - COALESCE(cs.\"Valore\", 0::money)) > %s::money \
-        ORDER BY totale desc;",
+        ORDER BY Totale desc;",
 
         // utenti con più di una tastiera
         "SELECT u.\"Nome\", u.\"Cognome\", count(mkb.\"ID\") \"Numero di tastiere\" \
