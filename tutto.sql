@@ -1,4 +1,3 @@
--- DROP DATABASE IF EXISTS new_database;
 DROP TABLE IF EXISTS "INDIRIZZO" CASCADE;
 CREATE TABLE "INDIRIZZO" (
 	"ID" serial NOT NULL,
@@ -137,7 +136,6 @@ CREATE TABLE "TASTIERA MECCANICA" (
 	FOREIGN KEY ("ID_PLATE") REFERENCES "PLATE" ("ID") MATCH FULL ON DELETE RESTRICT ON UPDATE CASCADE,
 	FOREIGN KEY ("ID_SWITCH") REFERENCES "SWITCH" ("ID") MATCH FULL ON DELETE RESTRICT ON UPDATE CASCADE
 );
---SET NULL ON UPDATE CASCADE;
 DROP TABLE IF EXISTS "RECENSIONE" CASCADE;
 CREATE TABLE "RECENSIONE" (
 	"ID" smallint NOT NULL,
@@ -1238,24 +1236,18 @@ INSERT INTO public."CASE" ("ID", "Colore", "Materiale", "Manufacturer", "Prezzo"
 (33, 'Azzurro', 'alluminio', 'varmilio', 12.22, 45, 2),
 (34, 'Bianco', 'alluminio', 'varmilio', 17.02, 33, 2);
 INSERT INTO public."TASTIERA MECCANICA" ("ID", "ID_KEYCAPS", "ID_PCB", "ID_SWITCH", "ID_PLATE", "ID_CASE") VALUES
--- keycaps, pcb, switch, plate, case
--- layout 11
 (1, 60, 40, 23, 22, 4),
 (2, 4, 11, 13, 22, 18),
 (3, 4, 40, 7, 8, 7),
 (4, 88, 11, 9, 9, 25),
 (5, 60, 11, 17, 9, 4),
--- mi pare 6
 (6, 39, 4, 12, 14, 33),
 (7, 27, 21, 23, 14, 33),
 (8, 50, 41, 17, 12, 34),
 (9, 74, 17, 11, 16, 33),
---7
 (10, 16, 22, 9, 18, 23),
---10
 (11, 45, 39, 22, 3, 20),
 (12, 61, 30, 27, 3, 5),
---2
 (13, 27, 41, 9, 12, 34),
 (14, 36, 21, 8, 16, 33),
 (15, 38, 17, 19, 14, 34),
@@ -1263,11 +1255,9 @@ INSERT INTO public."TASTIERA MECCANICA" ("ID", "ID_KEYCAPS", "ID_PCB", "ID_SWITC
 (17, 50, 41, 24, 12, 34),
 (18, 66, 35, 28, 12, 34),
 (19, 84, 45, 29, 14, 34),
---5
 (20, 57, 27, 16, 4, 11),
 (21, 46, 42, 24, 6, 11),
 (22, 94, 27, 22, 6, 19),
---3
 (23, 43, 14, 2, 19, 28),
 (24, 96, 2, 8, 21, 16),
 (25, 9, 2, 15, 23, 24);
