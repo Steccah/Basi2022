@@ -126,7 +126,7 @@ CREATE TABLE "TASTIERA MECCANICA" (
 	"ID" serial NOT NULL,
 	"ID_KEYCAPS" integer NOT NULL,
 	"ID_PCB" integer NOT NULL,
-	"ID_SWITCH" smallint NOT NULL,
+	"ID_SWITCH" integer NOT NULL,
 	"ID_PLATE" integer NOT NULL,
 	"ID_CASE" integer NOT NULL,
 	PRIMARY KEY ("ID"),
